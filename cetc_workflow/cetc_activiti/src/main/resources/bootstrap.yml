@@ -1,0 +1,90 @@
+server:
+  port: 9811
+spring:
+  application:
+    name: cetc-activiti
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://cetc-mysql:3306/cetc_activiti?useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    #使用阿里巴巴druid数据源，默认使用自带的
+    type: com.alibaba.druid.pool.DruidDataSource
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    rabbitmq:
+      queue: zipkin
+  rabbitmq:
+    host: cetc-rabbitmq
+    port: 5672
+    username: cetc
+    password: cetc
+    virtual-host: /cetc
+  freemarker:
+    check-template-location: false
+  activiti:
+    check-process-definitions: false
+  liquibase:
+    enabled: false
+  aop:
+    proxy-target-class: false
+  servlet:
+    multipart:
+      max-request-size: 2048MB
+      max-file-size: 2048MB
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://cetc-oauth2:9801/user-me
+      prefer-token-info: false
+#feign的配置
+feign:
+  hystrix:                                 #此配置表示开启feign的熔断
+    enabled: true
+ribbon:                         #如果路由方式是serviceId的方式，那么ribbon的生效，如果是url的方式，则zuul.host开头的生效
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+hystrix:                        #如果涉及到上传文件，要将超时时间设置的长一些，否则会报异常
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+management:
+  health:                                 #Springboot不支持6版本以上的ES检查，解决健康检查ES的报错问题
+    elasticsearch:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:                                #此配置代表查看详细的健康信息
+    health:
+      show-details: always
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://cetc-eureka:9800/eureka/
+org:
+  dromara:
+    hmily :
+      serializer : kryo
+      recoverDelayTime : 30
+      retryMax : 30
+      scheduledDelay : 30
+      scheduledThreadMax :  10
+      repositorySupport : db
+      started: false
+      hmilyDbConfig :
+        driverClassName  : com.mysql.cj.jdbc.Driver
+        url :  jdbc:mysql://cetc-mysql:3306/cetc_hmily?useUnicode=true&serverTimezone=GMT%2B8
+        username : root
+        password : 123456

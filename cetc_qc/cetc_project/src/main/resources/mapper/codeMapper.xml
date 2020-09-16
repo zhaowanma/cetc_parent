@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.CodeDao">
+    <resultMap id="codeMap" type="com.cetc.model.project.Code">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="value" column="value"/>
+        <result property="kingdom" column="kingdom"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="scope" column="scope"/>
+        <result property="leader" column="leader"/>
+        <result property="header" column="header"/>
+        <result property="num" column="num"/>
+        <result property="remarks" column="remarks"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="status" column="status"/>
+        <result property="isApply" column="is_apply"/>
+        <result property="isCompensate" column="is_compensate"/>
+        <result property="isYh" column="is_yh"/>
+        <result property="isZy" column="is_zy"/>
+        <result property="assignTime" column="assign_time"/>
+        <result property="softMan" column="soft_man"/>
+        <result property="signalMan" column="signal_man"/>
+        <result property="qualityer" column="qualityer"/>
+        <result property="projectMan" column="project_man"/>
+    </resultMap>
+
+   <insert id="addCode">
+       INSERT INTO cetc_code(
+           num,
+           name,
+           value,
+           kingdom,
+           parent_id,
+           scope,
+           header,
+           leader,
+           create_by,
+           create_date,
+           update_by,
+           update_date,
+           remarks,
+           assign_time
+       ) VALUES (
+             #{num},
+             #{name},
+             #{value},
+             #{kingdom},
+             #{parentId},
+             #{scope},
+             #{header},
+             #{leader},
+             #{createBy},
+             #{createDate},
+             #{updateBy},
+             #{updateDate},
+             #{remarks},
+             #{assignTime}
+           )
+       <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+           select LAST_INSERT_ID()
+       </selectKey>
+   </insert>
+
+
+    <insert id="importTemplateCode">
+        INSERT INTO cetc_code(
+        num,
+        name,
+        value,
+        kingdom,
+        parent_id,
+        scope,
+        header,
+        leader,
+        create_by,
+        create_date,
+        update_by,
+        update_date,
+        is_apply,
+        status,
+        remarks,
+        is_compensate,
+        is_yh,
+        is_zy,
+        assign_time
+        ) VALUES (
+        #{num},
+        #{name},
+        #{value},
+        #{kingdom},
+        #{parentId},
+        #{scope},
+        #{header},
+        #{leader},
+        #{createBy},
+        #{createDate},
+        #{updateBy},
+        #{updateDate},
+        #{isApply},
+        #{status},
+        #{remarks},
+        #{isCompensate},
+        #{isYh},
+        #{isZy},
+        #{assignTime}
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+
+    <select id="findByCodeValue" resultMap="codeMap">
+        SELECT * FROM cetc_code c WHERE c.value=#{value}
+    </select>
+
+    <select id="findOne" resultMap="codeMap">
+        SELECT * FROM cetc_code WHERE id = #{id}
+    </select>
+
+    <update id="updateCode">
+        UPDATE cetc_code
+          <set>
+           <if test="num !=null">
+               num=#{num},
+           </if>
+           <if test="name !=null and name !=''">
+              name=#{name},
+           </if>
+           <if test="value !=null and value !=''">
+              value=#{value},
+           </if>
+           <if test="kingdom !=null">
+              kingdom=#{kingdom},
+           </if>
+           <if test="parentId !=null">
+              parent_id=#{parentId},
+           </if>
+           <if test="scope !=null and scope !=''">
+              scope=#{scope},
+           </if>
+           <if test="header !=null and header !=''">
+              header=#{header},
+           </if>
+           <if test="updateBy !=null and updateBy !=''">
+              update_by=#{updateBy},
+           </if>
+           <if test="updateDate !=null ">
+              update_date=#{updateDate},
+           </if>
+              <if test="createDate !=null ">
+                  create_date=#{createDate},
+              </if>
+           <if test="isApply!= null">
+              is_apply = #{isApply},
+           </if>
+              <if test="isZy!= null">
+                  is_zy = #{isZy},
+              </if>
+           <if test="status != null">
+              status = #{status},
+           </if>
+           <if test="remarks != null and remarks !=''">
+              remarks = #{remarks},
+           </if>
+           <if test="softMan != null and softMan !=''">
+              soft_man = #{softMan},
+           </if>
+           <if test="signalMan != null and signalMan !=''">
+              signal_man = #{signalMan},
+           </if>
+           <if test="qualityer != null and qualityer !=''">
+              qualityer = #{qualityer},
+           </if>
+           <if test="projectMan != null and projectMan !=''">
+              project_man = #{projectMan},
+           </if>
+          </set>
+        WHERE id=#{id}
+    </update>
+
+   <select id="findAll" resultMap="codeMap">
+       SELECT * FROM cetc_code ORDER BY create_date DESC
+   </select>
+
+   <select id="countOfYear" resultType="Integer">
+       SELECT count(1) FROM cetc_code
+       WHERE
+           DATE_FORMAT(create_date,'%Y') &gt; #{begin}
+         AND
+           DATE_FORMAT(create_date,'%Y') &lt;= #{end}
+   </select>
+
+   <delete id="deleteOne">
+      DELETE FROM cetc_code WHERE id = #{id}
+   </delete>
+
+   <select id="findByKingdom" resultMap="codeMap">
+       SELECT * FROM cetc_code
+       WHERE parent_id = #{parentId}
+       ORDER BY create_date DESC
+   </select>
+
+   <update id="setLeader" >
+       UPDATE cetc_code SET leader = #{username} where id=#{id}
+   </update>
+
+    <select id="countByMonthAndKingdom" resultType="java.lang.Integer">
+      select count(1) from cetc_code
+      WHERE
+          DATE_FORMAT(create_date,'%Y-%m') &gt; #{begin}
+        AND
+          DATE_FORMAT(create_date,'%Y-%m') &lt; #{end}
+        AND
+          parent_id = #{parentId}
+        AND
+          status=1
+    </select>
+
+    <select id="fuzzyQueryList" resultMap="codeMap">
+        SELECT * FROM cetc_code
+        <where>
+            <if test="createBy!=null and createBy!=''">
+                and create_by=#{createBy}
+            </if>
+            <if test="parentId!=null">
+                and parent_id=#{parentId}
+            </if>
+            <if test="value!=null and value!=''">
+                and value=#{value}
+            </if>
+            <if test="header!=null and header!=''">
+                and header=#{header}
+            </if>
+            <if test="leader!=null and leader!=''">
+                and leader=#{leader}
+            </if>
+            <if test="status != null">
+                and status=#{status}
+            </if>
+            <if test="startDate!=null">
+                and create_date >= #{startDate}
+            </if>
+            <if test="endDate!=null">
+                and create_date  &lt; #{endDate}
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+
+    <select id="queryList" resultMap="codeMap">
+        SELECT * FROM cetc_code
+        <where>
+            <if test="createBy!=null and createBy!=''">
+                and create_by=#{createBy}
+            </if>
+            <if test="parentId!=null">
+                and parent_id=#{parentId}
+            </if>
+            <if test="value!=null and value!=''">
+                and value=#{value}
+            </if>
+            <if test="header!=null and header!=''">
+                and header=#{header}
+            </if>
+            <if test="leader!=null and leader!=''">
+                and leader=#{leader}
+            </if>
+            <if test="status != null">
+                and status=#{status}
+            </if>
+            <if test="startDate!=null">
+                and create_date >= #{startDate}
+            </if>
+            <if test="endDate!=null">
+                and create_date  &lt; #{endDate}
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+    <select id="findCodeByField" resultMap="codeMap">
+        SELECT * FROM cetc_code
+        <where>
+            <if test="createBy!=null and createBy!=''">
+                and create_by=#{createBy}
+            </if>
+            <if test="parentId!=null">
+                and parent_id=#{parentId}
+            </if>
+            <if test="value!=null and value!=''">
+                and value=#{value}
+            </if>
+            <if test="header!=null and header!=''">
+                and header=#{header}
+            </if>
+            <if test="leader!=null and leader!=''">
+                and leader=#{leader}
+            </if>
+            <if test="status != null">
+                and status=#{status}
+            </if>
+            <if test="isZy!=null">
+                and is_zy=#{isZy}
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+</mapper>

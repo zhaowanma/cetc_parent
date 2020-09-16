@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.notice.dao.NoticeDao">
+    <resultMap id="noticeMap" type="com.cetc.model.notice.Notice">
+        <id column="id" property="id"></id>
+        <result column="title" property="title"></result>
+        <result column="comment" property="comment"></result>
+        <result column="checker" property="checker"></result>
+        <result column="creater" property="creater"></result>
+        <result column="create_time" property="createTime"></result>
+
+    </resultMap>
+
+    <select id="findNotice" resultMap="noticeMap">
+        select * from cetc_act_task where checker=#{checker} and is_read=#{isRead} and del_flag=0 order by create_time DESC
+    </select>
+
+    <insert id="saveNotice" >
+        insert into cetc_act_task (title,comment,checker,creater,create_time) values (#{title},#{comment},#{checker},#{creater},#{createTime})
+    </insert>
+
+    <select id="countMsgIsRead" resultType="int">
+        select count(1) from cetc_act_task where checker=#{checker} and is_read=#{isRead} and del_flag=0
+    </select>
+
+    <update id="markAsRead">
+        update cetc_act_task set is_read=1 where id=#{id}
+    </update>
+    <update id="markAsReadByTime">
+        UPDATE cetc_act_task
+        SET
+            is_read = 1
+        WHERE
+
+            checker = #{checker}
+          AND
+            DATE_FORMAT(create_time,'%Y-%m-%d') &gt; #{begin}
+          AND
+            DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{end}
+    </update>
+    <delete id="deleteNotice">
+        DELETE FROM cetc_act_task WHERE id = #{id}
+    </delete>
+    <delete id="deleteByTime">
+        DELETE FROM cetc_act_task
+        WHERE
+            is_read = 1
+          AND
+            checker = #{checker}
+          AND
+            DATE_FORMAT(create_time,'%Y-%m-%d') &gt; #{begin}
+          AND
+            DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{end}
+    </delete>
+    <select id="query" resultMap="noticeMap">
+        SELECT * FROM cetc_act_task
+        WHERE checker = #{checker}
+          AND
+            is_read= #{read}
+          AND
+            DATE_FORMAT(create_time,'%Y-%m-%d') &gt; #{begin}
+          AND
+            DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{end}
+        order by create_time DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,21 @@
+server:
+  port: 1112 #服务端口
+
+eureka:
+  server:
+    enable-self-preservation: false    #关闭服务器自我保护，客户端心跳检测15分钟内错误达到80%服务会保护，导致别人还认为是好用的服务
+    eviction-interval-timer-in-ms: 60000 #清理间隔（单位毫秒，默认是60*1000）5秒将客户端剔除的服务在服务注册列表中剔除#
+  instance:
+    hostname: eureka2
+    appname: eureka-server
+    prefer-ip-address: false   #prefer-ip-address设置为true以IP地址注册到服务中心，相互注册使用IP地址
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${spring.application.instance_id:${server.port}}
+    lease-renewal-interval-in-seconds: 2    # 续约更新时间间隔（默认30秒），eureka客户端向服务端发送心跳的时间间隔
+    lease-expiration-duration-in-seconds: 30 # 续约到期时间（默认90秒）
+
+  client:
+    registerWithEureka: true #是否将自己注册到Eureka服务中，本身就是所有无需注册
+    fetchRegistry: true #缓存服务清单
+    registry-fetch-interval-seconds: 30  #从eureka服务端获取注册信息的间隔时间
+    service-url:
+      defaultZone: http://ocp:ocp2019@eureka1:1111/eureka,http://ocp:ocp2019@eureka2:1112/eureka,http://ocp:ocp2019@eureka3:1113/eureka

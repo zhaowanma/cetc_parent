@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.admin.dao.UserDao">
+
+    <resultMap id="userMap" type="com.cetc.model.admin.SysUser">
+        <id column="user_id" property="id"></id>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+        <result column="fullname" property="fullname"></result>
+        <result column="phone" property="phone"></result>
+        <result column="sex" property="sex"></result>
+        <result column="user_type" property="type"></result>
+        <result column="enabled" property="enabled"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+        <result column="password_check_time" property="passwordCheckTime"></result>
+    </resultMap>
+
+
+
+    <sql id="where">
+        <where>
+            <if test="username != null and username != ''">
+                <bind name="_username" value="'%' + username + '%'"/>
+                and t.username like #{_username}
+            </if>
+            <if test="fullname != null and fullname != ''">
+                <bind name="_fullname" value="'%' + fullname + '%'"/>
+                and t.fullname like #{_fullname}
+            </if>
+                and t.username != "root"
+                and t.del_flag =0
+
+        </where>
+    </sql>
+
+    <select id="findUserByUsername" resultMap="userMap">
+       select * from sys_user where username = #{username} and del_flag= 0;
+    </select>
+
+    <select id="findUserByUserId" resultMap="userMap">
+        select * from sys_user where user_id = #{userId} and del_flag= 0;
+    </select>
+
+    <insert id="saveUser">
+      insert into sys_user(username,password,fullname,phone,sex,user_type,create_time,update_time,password_check_time)
+       values (#{username},#{password},#{fullname},#{phone},#{sex},#{type},#{createTime},#{updateTime},#{passwordCheckTime})
+       <selectKey keyProperty="id" keyColumn="user_id" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+     <select id="queryAllUsers" resultMap="userMap">
+         select * from sys_user t
+        <include refid="where" />
+         order by create_time DESC
+     </select>
+
+    <update id="updateUser">
+        update sys_user
+        <set>
+            <if test="username!= null and username !=''">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="fullname != null and fullname != ''">
+                fullname = #{fullname,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                user_type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="passwordCheckTime != null">
+                password_check_time = #{passwordCheckTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where user_id = #{id,jdbcType=INTEGER}
+    </update>
+    <delete id="deleteByUserId">
+        delete from sys_user where user_id =#{userId}
+    </delete>
+    <select id="findAllUsers" resultMap="userMap">
+        SELECT
+            user_id,
+            username,
+            fullname,
+            phone,
+            sex,
+            user_type,
+            enabled,
+            create_time,
+            update_time
+         FROM sys_user
+       ORDER BY username
+    </select>
+    <select id="findByType" resultMap="userMap">
+        SELECT * FROM sys_user WHERE user_type = #{isSys}
+    </select>
+
+
+
+</mapper>

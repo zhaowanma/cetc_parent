@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.KingdomDao">
+    <resultMap id="kingdomMap" type="com.cetc.model.project.Kingdom">
+        <!--定义主键-->
+        <id property="id" column="id" />
+        <!--property:主键在pojo中的属性名-->
+        <!--column:主键在数据库中的列名-->
+        <result property="name" column="name"/>
+        <result property="createDate" column="create_date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+    <insert id="addKingdom">
+        INSERT INTO  cetc_kingdom (
+           name,
+           create_date,
+           create_by,
+           update_date,
+           update_by,
+           remarks
+        ) VALUES
+          (
+           #{name},
+           #{createDate},
+           #{createBy},
+           #{updateDate},
+           #{updateBy},
+           #{remarks}
+          )
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+    <select id="findAll" resultMap="kingdomMap">
+       SELECT *
+       FROM cetc_kingdom
+       ORDER BY create_date DESC
+    </select>
+    <update id="update">
+        UPDATE cetc_kingdom SET
+           name = #{name},
+           update_date = #{updateDate},
+           update_by = #{updateBy}
+        WHERE id = #{id}
+    </update>
+    <select id="findByName" resultMap="kingdomMap">
+        SELECT *
+          FROM cetc_kingdom
+          WHERE name = #{name}
+    </select>
+    <delete id="deleteById">
+        DELETE FROM cetc_kingdom WHERE id=#{id}
+    </delete>
+    <select id="findOne" resultMap="kingdomMap">
+        SELECT * FROM cetc_kingdom WHERE  id = #{id}
+    </select>
+</mapper>

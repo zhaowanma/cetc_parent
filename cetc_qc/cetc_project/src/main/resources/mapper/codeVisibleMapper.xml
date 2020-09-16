@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.CodeVisitableDao">
+
+<resultMap id="codeMap" type="com.cetc.model.project.Code">
+    <id property="id" column="id" />
+    <result property="name" column="name"/>
+    <result property="value" column="value"/>
+    <result property="kingdom" column="kingdom"/>
+    <result property="parentId" column="parent_id"/>
+    <result property="scope" column="scope"/>
+    <result property="leader" column="leader"/>
+    <result property="header" column="header"/>
+    <result property="num" column="num"/>
+    <result property="remarks" column="remarks"/>
+    <result property="createBy" column="create_by"/>
+    <result property="createDate" column="create_date"/>
+    <result property="updateBy" column="update_by"/>
+    <result property="updateDate" column="update_date"/>
+    <result property="status" column="status"/>
+    <result property="isApply" column="is_apply"/>
+</resultMap>
+
+<insert id="insertCodeUsername">
+    insert into cetc_code_visitable(code_id,username) values (#{codeId},#{username})
+</insert>
+
+<delete id="deleteByUsernameAndCodeId">
+    delete from cetc_code_visitable where code_id=#{codeId} and username=#{username}
+</delete>
+
+<select id="findCodeByCodeIdAndUsername" resultMap="codeMap">
+    select * from cetc_code_visitable cv left join cetc_code c on cv.code_id = c.id where cv.code_id = #{codeId} and cv.username=#{username}
+</select>
+
+<select id="findUsernamesByCodeId" resultType="java.lang.String">
+    select username from cetc_code_visitable where code_id=#{codeId}
+</select>
+<delete id="deleteByCodeId">
+    delete from cetc_code_visitable where code_id=#{codeId}
+</delete>
+
+</mapper>

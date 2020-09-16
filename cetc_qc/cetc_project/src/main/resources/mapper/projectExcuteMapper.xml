@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.ProjectExcuteDao">
+    <resultMap id="excuteMap" type="com.cetc.model.project.ProjectExcute">
+        <!--定义主键-->
+        <id property="id" column="id" />
+        <!--property:主键在pojo中的属性名-->
+        <!--column:主键在数据库中的列名-->
+        <result property="name" column="name"/>
+        <result property="kingdomId" column="kingdom_id"/>
+        <result property="kingdom" column="kingdom"/>
+        <result property="codeId" column="code_id"/>
+        <result property="code" column="code"/>
+        <result property="projectId" column="project_id"/>
+        <result property="project" column="project"/>
+        <result property="excuteDate" column="excute_date"/>
+        <result property="excuteLocal" column="excute_local"/>
+        <result property="excuters" column="excuters"/>
+        <result property="examples" column="examples"/>
+        <result property="useTime" column="use_time"/>
+        <result property="passFlag" column="pass_flag"/>
+        <result property="passer" column="passer"/>
+        <result property="name" column="name"/>
+        <result property="passDate" column="pass_date"/>
+        <result property="createDate" column="create_date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="updateBy" column="update_by"/>
+    </resultMap>
+    <insert id="addProjectExcute">
+        INSERT INTO  cetc_project_excute (
+            name,
+            kingdom_id,
+            kingdom,
+            code_id,
+            code,
+            project_id,
+            project,
+            excute_date,
+            excute_local,
+            excuters,
+            examples,
+            use_time,
+            pass_flag,
+            passer,
+            pass_date,
+            create_date,
+            create_by,
+            update_date,
+            update_by
+
+        )
+        VALUES
+        (
+            #{name},
+            #{kingdomId},
+            #{kingdom},
+            #{codeId},
+            #{code},
+            #{projectId},
+            #{project},
+            #{excuteDate},
+            #{excuteLocal},
+            #{excuters},
+            #{examples},
+            #{useTime},
+            #{passFlag},
+            #{passer},
+            #{passDate},
+            #{createDate},
+            #{createBy},
+            #{updateDate},
+            #{updateBy}
+        )
+
+    </insert>
+    <select id="findProjectExcuteByProject" resultMap="excuteMap">
+        select * from cetc_project_excute where project_id = #{projectId} ORDER BY update_date DESC
+    </select>
+    <update id="updateProjectExcute">
+        update cetc_project_excute
+       <set>
+           <if test="name !=null and name !=''">
+                 name = #{name},
+           </if>
+           <if test="useTime !=null">
+                 use_time = #{useTime},
+           </if>
+           <if test="excuteLocal !=null and excuteLocal !=''">
+                 excute_local = #{excuteLocal},
+           </if>
+           <if test="excuters !=null">
+                 excuters = #{excuters},
+           </if>
+           <if test="examples !=null and examples !=''">
+                 examples = #{examples},
+           </if>
+       </set>
+     where id = #{id}
+    </update>
+    <delete id="deleteOne">
+        delete from cetc_project_excute where id = #{id}
+    </delete>
+    <delete id="deleteProjectExcute">
+        delete from cetc_project_excute
+          <where>
+
+              <if test="kingdomId !=null">
+                  and kingdom_id = #{kingdomId}
+              </if>
+              <if test="codeId !=null">
+                  and code_id = #{codeId}
+              </if>
+              <if test="projectId !=null">
+                  and project_id = #{projectId}
+              </if>
+              <if test="name !=null and name!=''">
+                  and name = #{name}
+              </if>
+              <if test="start!=null">
+                  and create_date >= #{start}
+              </if>
+              <if test="end!=null">
+                  and  create_date  &lt; #{end}
+              </if>
+          </where>
+    </delete>
+</mapper>

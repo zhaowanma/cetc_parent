@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- 公司或者组织的唯一标志，并且配置时生成的路径也是由此生成，
+     如com.cetc，maven会将该项目打成的jar包放本地路径：
+     com.cetc -->
+    <groupId>com.cetc</groupId>
+    <!-- 项目的唯一ID，一个groupId下面可能多个项目，就是靠artifactId来区分的 -->
+    <artifactId>cetc_parent</artifactId>
+    <!-- 版本号 -->
+    <version>1.0.0</version>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+
+    <developers>
+        <developer>
+            <name>iuit</name>
+            <email>zhaowm@iuit.com</email>
+            <roles>
+                <role>leader</role>
+            </roles>
+        </developer>
+    </developers>
+    <modules>
+        <module>cetc_common</module>
+        <module>cetc_auth</module>
+        <module>cetc_eureka</module>
+        <module>cetc_admin</module>
+        <module>cetc_gateway</module>
+        <module>cetc_log</module>
+        <module>cetc_zipkin</module>
+        <module>cetc_monitor</module>
+        <module>cetc_task</module>
+        <module>cetc_workflow</module>
+        <module>cetc_notice</module>
+        <module>cetc_qc</module>
+    </modules>
+    <!--最新稳定版本2.1.6，relativePath设定一个空值将始终从仓库中获取，不从本地路径获取-->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.6.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <!--xml、properties文件都是资源文件，编码的时候遇到中文总要进行转码！UTF-8-->
+    <!--java运行环境，jdk1.8-->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+        <mybatis.version>1.3.2</mybatis.version>
+        <security-oauth2.version>2.3.3.RELEASE</security-oauth2.version>
+        <elasticsearch.version>6.3.2</elasticsearch.version>
+        <zipkin.version>2.12.2</zipkin.version>
+        <zipkin-storage-mysql.version>2.8.4</zipkin-storage-mysql.version>
+        <jooq.version>3.11.11</jooq.version>
+        <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
+        <security-oauth2.version>2.3.3.RELEASE</security-oauth2.version>
+
+    </properties>
+
+    <dependencies>
+        <!--添加Web应用程序的典型依赖项-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--测试框架-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--SpringBoot的健康检查-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!--监控客户端-->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>${spring-boot-admin.version}</version>
+        </dependency>
+
+
+
+        <!--Lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.58</version>
+        </dependency>
+    </dependencies>
+
+<!--maven插件的远程仓库-->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <!--引入依赖，父工程定义springcloud版本-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Greenwich.SR2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId> org.elasticsearch.client </groupId>
+                <artifactId> elasticsearch-rest-high-level-client </artifactId>
+                <version> ${elasticsearch.version} </version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+
+</project>

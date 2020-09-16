@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.alm.dao.ProjectDao">
+    <resultMap id="projectMap" type="com.cetc.model.project.Project">
+        <id property="id" column="id" />
+        <result property="parentId" column="parent_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="testGrade" column="test_grade"/>
+        <result property="testLeader" column="test_leader"/>
+        <result property="num" column="num"/>
+        <result property="isApply" column="is_apply"/>
+        <result property="status" column="status"/>
+        <result property="almDomainName" column="alm_domain_name"/>
+        <result property="almProjectName" column="alm_project_name"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateDate" column="update_date"/>
+    </resultMap>
+    <select id="findOne" resultMap="projectMap">
+        SELECT
+           *
+        FROM cetc_project
+        WHERE id = #{id}
+    </select>
+</mapper>

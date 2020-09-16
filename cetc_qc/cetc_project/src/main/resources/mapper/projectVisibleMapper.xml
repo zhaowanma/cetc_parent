@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.ProjectVisitableDao">
+
+    <resultMap id="projectMap" type="com.cetc.model.project.Project">
+        <id property="id" column="id" />
+        <result property="parentId" column="parent_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="kingdom" column="kingdom"/>
+        <result property="kingdomId" column="kingdom_id"/>
+        <result property="testGrade" column="test_grade"/>
+        <result property="testLeader" column="test_leader"/>
+        <result property="leader" column="leader"/>
+        <result property="num" column="num"/>
+        <result property="isApply" column="is_apply"/>
+        <result property="status" column="status"/>
+        <result property="almDomainName" column="alm_domain_name"/>
+        <result property="almProjectName" column="alm_project_name"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="softer" column="softer"/>
+        <result property="codeSize" column="code_size"/>
+    </resultMap>
+
+    <insert id="insertProjectUsername">
+        insert into cetc_project_visitable(project_id,username) values (#{projectId},#{username})
+    </insert>
+
+    <delete id="deleteByUsernameAndProjectId">
+        delete from cetc_project_visitable where project_id=#{projectId} and username=#{username}
+    </delete>
+
+    <delete id="deleteByProjectId">
+        delete from cetc_project_visitable where project_id=#{projectId}
+    </delete>
+
+    <select id="findProjectsByUsername" resultMap="projectMap">
+        select * from cetc_project_visitable cv left join cetc_project c on cv.project_id = c.id where cv.username=#{username}
+    </select>
+
+    <select id="findProjectByProjectIdAndUsername" resultMap="projectMap">
+        select * from cetc_project_visitable cv left join cetc_project c on cv.project_id = c.id where cv.project_id = #{projectId} and cv.username=#{username}
+    </select>
+
+    <select id="findUsernamesByProjectId" resultType="java.lang.String">
+        select username from cetc_project_visitable where project_id=#{projectId}
+    </select>
+
+
+</mapper>

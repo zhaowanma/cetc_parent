@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.dic.dao.ParamDao">
+
+    <resultMap id="paramMap" type="com.cetc.model.dic.Param">
+        <id column="id" property="id"></id>
+        <result column="param_name" property="paramName"></result>
+        <result column="param_key" property="paramKey"></result>
+        <result column="param_value" property="paramValue"></result>
+        <result column="param_sys" property="paramSys"></result>
+        <result column="remarks" property="remarks"></result>
+    </resultMap>
+
+    <sql id="fuzzyQuery">
+        <where>
+            <if test="paramName != null and paramName != ''">
+                <bind name="_paramName" value="'%' + paramName + '%'"/>
+                and param_name like #{_paramName}
+            </if>
+        </where>
+    </sql>
+
+
+
+    <select id="findAll" resultMap="paramMap">
+        select * from cetc_sys_param <include refid="fuzzyQuery" /> order by param_name DESC
+    </select>
+
+    <insert id="insert">
+        insert into cetc_sys_param(param_name,param_key,param_value,param_sys,remarks) values(#{paramName},#{paramKey},#{paramValue},#{paramSys},#{remarks})
+    </insert>
+
+    <select id="queryById" resultMap="paramMap">
+        select * from cetc_sys_param where id=#{id}
+    </select>
+
+    <update id="updateById">
+        update cetc_sys_param
+        <set>
+            <if test="paramName!= null and paramName !=''">
+                param_name = #{paramName,jdbcType=VARCHAR},
+            </if>
+            <if test="paramKey != null and paramKey != ''">
+                param_key = #{paramKey,jdbcType=VARCHAR},
+            </if>
+            <if test="paramValue != null and paramValue != ''">
+                param_value = #{paramValue,jdbcType=VARCHAR},
+            </if>
+            <if test="paramSys != null">
+                param_sys = #{paramSys,jdbcType=INTEGER},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete">
+        delete from cetc_sys_param where id=#{id}
+    </delete>
+
+    <select id="queryByKey" resultMap="paramMap">
+        select * from cetc_sys_param where param_key=#{key}
+    </select>
+</mapper>

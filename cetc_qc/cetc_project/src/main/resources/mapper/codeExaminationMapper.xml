@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.CodeExaminationDao">
+    <resultMap id="examinationMap" type="com.cetc.model.project.CodeExamination">
+        <id property="id" column="id" />
+        <result property="newFlag" column="new_flag"/>
+        <result property="kingdomId" column="kingdom_id"/>
+        <result property="kingdom" column="kingdom"/>
+        <result property="codeId" column="code_id"/>
+        <result property="code" column="code"/>
+        <result property="projectId" column="project_id"/>
+        <result property="project" column="project"/>
+        <result property="configItem" column="config_item"/>
+        <result property="leader" column="leader"/>
+        <result property="version" column="version"/>
+        <result property="developer" column="developer"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="remarks" column="remarks"/>
+        <result property="endDate" column="end_date"/>
+    </resultMap>
+    <insert id="add">
+        INSERT INTO cetc_examinationk_task (
+            new_flag,
+            kingdom_id,
+            kingdom,
+            code_id,
+            code,
+            project_id,
+            project,
+            config_item,
+            leader,
+            version,
+            developer,
+            create_by,
+            create_date,
+            update_by,
+            update_date,
+            remarks,
+            end_date
+        ) VALUES (
+                #{newFlag},
+                #{kingdomId},
+                #{kingdom},
+                #{codeId},
+                #{code},
+                #{projectId},
+                #{project},
+                #{configItem},
+                #{leader},
+                #{version},
+                #{developer},
+                #{createBy},
+                #{createDate},
+                #{updateBy},
+                #{updateDate},
+                #{remarks},
+                #{endDate}
+                         )
+    </insert>
+    <delete id="deleteOne">
+        DELETE FROM cetc_examinationk_task WHERE id = #{id}
+    </delete>
+    <select id="queryList" resultMap="examinationMap">
+        select * from cetc_examinationk_task
+        <where>
+            <if test="project != null and project !=''">
+               AND project LIKE CONCAT('%',#{project},'%')
+            </if>
+            <if test="start != null">
+                AND createTime &gt;= #{start}
+            </if>
+            <if test="end != null">
+                AND createTime &lt;  #{end}
+            </if>
+        </where>
+       order by create_date desc
+    </select>
+    <update id="update">
+        UPDATE cetc_examinationk_task
+        <set>
+            <if test="code !=null and code !=''">
+                code=#{code},
+            </if>
+            <if test="project !=null and project !=''">
+                project=#{project},
+            </if>
+            <if test="configItem !=null and configItem !=''">
+                config_item=#{configItem},
+            </if>
+            <if test="leader !=null and leader !=''">
+                leader=#{leader},
+            </if>
+            <if test="version !=null and version !=''">
+                version=#{version},
+            </if>
+            <if test="developer !=null and developer !=''">
+                developer=#{developer},
+            </if>
+            <if test="updateBy !=null and updateBy !=''">
+                update_by=#{updateBy},
+            </if>
+            <if test="endDate !=null ">
+                end_date=#{endDate},
+            </if>
+            <if test="updateDate !=null">
+                update_date=#{updateDate},
+            </if>
+            <if test="remarks !=null and remarks !=''">
+                remarks=#{remarks},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

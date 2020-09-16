@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.AnnotationDao">
+    <resultMap id="annoMap" type="com.cetc.model.project.Annotation">
+        <id property="id" column="id" />
+        <result property="parentId" column="parent_id"/>
+        <result property="type" column="anno_type"/>
+        <result property="annoLevel" column="anno_level"/>
+        <result property="author" column="author"/>
+        <result property="text" column="anno_text"/>
+        <result property="createDate" column="create_date"/>
+    </resultMap>
+
+    <insert id="addAnnotation">
+        INSERT INTO cetc_annotation (
+            parent_id,
+            anno_type,
+            anno_level,
+            author,
+            anno_text,
+            uuid,
+            create_date
+        )
+        VALUES (
+           #{parentId},
+           #{type},
+           #{annoLevel},
+           #{author},
+           #{text},
+           #{uuid},
+           #{createDate}
+               );
+    </insert>
+    <delete id="deleteOne">
+        DELETE FROM cetc_annotation WHERE id = #{id}
+    </delete>
+    <delete id="deleteAnnotation">
+        DELETE FROM cetc_annotation
+        <where>
+            <if test="parentId !=null">
+                and parent_id = #{parentId}
+            </if>
+            <if test="annoLevel !=null and annoLevel!=''">
+                and anno_level = #{annoLevel}
+            </if>
+            <if test="annoType !=null and annoType!=''">
+                and anno_type = #{annoType}
+            </if>
+            <if test="start!=null">
+                and create_date >= #{start}
+            </if>
+            <if test="end!=null">
+                and  create_date  &lt; #{end}
+            </if>
+        </where>
+    </delete>
+    <select id="findByUuid" resultMap="annoMap">
+        SELECT * FROM cetc_annotation WHERE uuid = #{uuid}
+    </select>
+    <update id="setParent">
+         UPDATE cetc_annotation
+         SET
+             parent_id = #{parentId},
+             anno_level = #{annoLevel}
+
+         WHERE
+          uuid = #{uuid}
+    </update>
+    <delete id="delAnnoByParentId">
+        DELETE FROM cetc_annotation WHERE parent_id = #{parentId}
+    </delete>
+    <delete id="delAnnoParentNull">
+        DELETE FROM cetc_annotation WHERE parent_id is null
+    </delete>
+    <select id="queryList" resultMap="annoMap">
+        select * from cetc_annotation
+         <where>
+             <if test="parentId !=null">
+                 and parent_id = #{parentId}
+             </if>
+             <if test="annoLevel !=null and annoLevel!=''">
+                 and anno_level = #{annoLevel}
+             </if>
+             <if test="annoType !=null and annoType!=''">
+                 and anno_type = #{annoType}
+             </if>
+             <if test="start!=null">
+                 and create_date >= #{start}
+             </if>
+             <if test="end!=null">
+                 and  create_date  &lt; #{end}
+             </if>
+         </where>
+    </select>
+</mapper>

@@ -1,0 +1,107 @@
+server:
+  port: 82
+spring: 
+  application:  
+    name: cetc-gateway #指定服务名
+  servlet:
+    multipart:
+      max-request-size: 20MB
+      max-file-size: 20MB
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    rabbitmq:
+      queue: zipkin
+  redis:
+    host: cetc-redis
+    port: 6379
+    password:
+    timeout: 10s
+    lettuce:
+      pool:
+        min-idle: 0
+        max-idle: 8
+        max-active: 8
+        max-wait: 1000ms
+      shutdown-timeout: 100ms
+  rabbitmq:
+    host: cetc-rabbitmq
+    port: 5672
+    username: cetc
+    password: cetc
+    virtual-host: /cetc
+logging:
+  level:
+    root: info
+    com.cetc: debug
+  file: logs/${spring.application.name}.log
+#暴露监控端点
+management:
+  health:                                 #Springboot不支持6版本以上的ES检查，解决健康检查ES的报错问题
+    elasticsearch:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:                                #此配置代表查看详细的健康信息
+    health:
+      show-details: always
+eureka:
+  instance:
+    hostname: cetc-gateway
+    prefer-ip-address: true
+  client:
+    registerWithEureka: true #是否将自己注册到Eureka服务中
+    fetchRegistry: true #要在本地缓存注册表信息
+    service-url:
+      defaultZone: http://cetc-eureka:9800/eureka
+zuul:
+  sensitive-headers:        #敏感header的设置，此处为空,默认Authorization不被转发
+  #  ignored-services: '*'    #该配置关闭，则zuul会默认代理所有注册在Eureka上的微服务
+  routes:
+    cetc-admin:              #路由的一个名称，可以任意起名
+      path: /api-admin/**
+      serviceId: cetc-admin
+    cetc-auth:
+      path: /api-auth/**
+      serviceId: cetc-auth
+    cetc-log:
+      path: /api-log/**
+      serviceId: cetc-log
+    cetc-activiti:
+      path: /api-activiti/**
+      serviceId: cetc-activiti
+    cetc-notice:
+      path: /api-notice/**
+      serviceId: cetc-notice
+    cetc-dic:
+      path: /api-dic/**
+      serviceId: cetc-dic
+    cetc-project:
+      path: /api-project/**
+      serviceId: cetc-project
+    cetc-hpalm:
+      path: /api-hpalm/**
+      serviceId: cetc-hpalm
+    cetc-office:
+      path: /api-document/**
+      serviceId:  cetc-document
+  host:
+    connect-timeout-millis: 2000
+    socket-timeout-millis: 2000
+  add-proxy-headers: true      #标识以确定代理是否添加X-Forwarded- *标头
+  ribbon:
+    eager-load:                 #开启Ribbon的饥饿加载模式，Ribbon默认是懒加载模式
+      enabled: true
+ribbon:                         #如果路由方式是serviceId的方式，那么ribbon的生效，如果是url的方式，则zuul.host开头的生效
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+hystrix:                        #如果涉及到上传文件，要将超时时间设置的长一些，否则会报异常
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000

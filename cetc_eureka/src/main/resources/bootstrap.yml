@@ -1,0 +1,4 @@
+spring:
+  application:
+    name: cetc-eureka #指定服务名
+

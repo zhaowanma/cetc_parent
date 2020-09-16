@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.admin.dao.UserRoleDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="sysRoleMap" type="com.cetc.model.admin.SysRole">
+        <id column="role_id" property="roleId"/>
+        <result column="code" property="code"/>
+        <result column="name" property="name"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="findRolesByUserId" resultMap="sysRoleMap">
+
+       select r.* from sys_user_role ur inner join sys_role r on r.role_id = ur.role_id where ur.user_id = #{userId}
+
+    </select>
+
+    <delete id="deleteByUserId">
+        delete from sys_user_role where user_id=#{userId}
+    </delete>
+
+    <delete id="deleteByRoleId">
+        delete from sys_user_role where role_id=#{roleId}
+    </delete>
+
+    <insert id="saveUserIdAndRoleId">
+        insert into sys_user_role(user_id,role_id) values (#{userId},#{roleId})
+    </insert>
+</mapper>

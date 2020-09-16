@@ -1,0 +1,94 @@
+server:
+  port: 9809
+
+spring:
+  application:
+    name: cetc-project
+  datasource:
+    url: jdbc:mysql://cetc-mysql:3306/cetc_qc?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+  servlet:
+    multipart:
+      max-request-size: 20MB
+      max-file-size: 20MB
+  redis:
+    host: cetc-redis
+    port: 6379
+    password:
+    timeout: 10s
+    lettuce:
+      pool:
+        min-idle: 100
+        max-idle: 3000
+        max-active: 3000
+        max-wait: 10000ms
+  rabbitmq:
+    host: cetc-rabbitmq
+    port: 5672
+    username: cetc
+    password: cetc
+    virtual-host: /cetc
+mybatis:
+  mapper-locations: classpath:/mapper/*
+
+mq:
+  queue:
+    name: system.notice.queue
+logging:
+  level:
+    root: info
+    com.cetc: debug
+  file: logs/${spring.application.name}.log
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://cetc-oauth2:9801/user-me
+      prefer-token-info: false
+eureka:
+  client:
+    registerWithEureka: true #服务注册开关
+    fetchRegistry: true  #服务发现发现开关
+    service-url:  #注册到Eureka中心
+      defaultZone:  http://cetc-eureka:9800/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${server.port} #指定实例ID
+    prefer-ip-address: true #访问路径可以显示IP地址
+ACTIVITI:
+  MODEL:
+    CODE:
+      KEY: cetc_code_apply
+    PROJECT:
+      KEY: cetc_project_apply
+org:
+  dromara:
+    hmily :
+      serializer : kryo
+      recoverDelayTime : 30
+      retryMax : 30
+      scheduledDelay : 30
+      scheduledThreadMax :  10
+      repositorySupport : db
+      started: true
+      hmilyDbConfig :
+        driverClassName  : com.mysql.cj.jdbc.Driver
+        url :  jdbc:mysql://cetc-mysql:3306/cetc_hmily?useUnicode=true
+        username : root
+        password : 123456
+#feign的配置
+feign:
+  hystrix:                                 #此配置表示开启feign的熔断
+    enabled: true
+ribbon:                         #如果路由方式是serviceId的方式，那么ribbon的生效，如果是url的方式，则zuul.host开头的生效
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+hystrix:                        #如果涉及到上传文件，要将超时时间设置的长一些，否则会报异常
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+

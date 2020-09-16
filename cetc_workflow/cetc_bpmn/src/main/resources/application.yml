@@ -1,0 +1,17 @@
+server:
+  port: 9812
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    一定要添加&nullCatalogMeansCurrent=true，不然activiti表创建失败
+    url: jdbc:mysql://cetc-mysql:3306/cetc_activiti?useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    #使用阿里巴巴druid数据源，默认使用自带的
+    type: com.alibaba.druid.pool.DruidDataSource
+  activiti:
+    check-process-definitions: true
+    process-definition-location-prefix: classpath:/processes/
+  liquibase:
+    enabled: false
+

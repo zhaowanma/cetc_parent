@@ -1,0 +1,66 @@
+server:
+  port: 9802
+
+spring:
+  application:
+    name: cetc-dic #指定服务名
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://cetc-mysql:3306/cetc_dic?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-test-query: SELECT 1
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    rabbitmq:
+      queue: zipkin
+  rabbitmq:
+    host: cetc-rabbitmq
+    port: 5672
+    username: cetc
+    password: cetc
+    virtual-host: /cetc
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+        defaultZone: http://cetc-eureka:9800/eureka
+mybatis:
+  mapper-locations: classpath:/mybatis-mappers/*
+  configuration:
+    mapUnderscoreToCamelCase: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://cetc-oauth2:9801/user-me
+      prefer-token-info: false
+
+#暴露监控端点
+management:
+  health:                                 #Springboot不支持6版本以上的ES检查，解决健康检查ES的报错问题
+    elasticsearch:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:                                #此配置代表查看详细的健康信息
+    health:
+      show-details: always
+
+logging:
+  level:
+    root: info
+    com.cetc: debug
+  file: logs/${spring.application.name}.log
+

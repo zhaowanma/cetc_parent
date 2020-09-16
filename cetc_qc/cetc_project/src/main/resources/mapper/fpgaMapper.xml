@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.FpgaDao">
+    <resultMap id="fpgaStandardMap" type="com.cetc.model.project.FpgaStandard">
+        <id property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="totalProblems" column="total_problems"/>
+        <result property="numRuleViolations" column="num_rule_violations"/>
+        <result property="numViolations" column="num_violations"/>
+        <result property="scaleCodeReview" column="scale_codeReview"/>
+        <result property="totalTime" column="total_time"/>
+        <result property="typeTest" column="type_test"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="project" column="project"/>
+        <result property="code" column="code"/>
+        <result property="codeId" column="code_id"/>
+        <result property="kingdom" column="kingdom"/>
+        <result property="kingdomId" column="kingdom_id"/>
+    </resultMap>
+
+    <insert id="addFpgaStandard">
+        insert into cetc_fpga_standard(
+        parent_id,
+        project,
+        total_problems,
+        num_rule_violations,
+        num_violations,
+        scale_codeReview,
+        total_time,
+        type_test,
+        create_by,
+        create_date,
+        update_by,
+        update_date,
+        description,
+        code,
+        code_id,
+        kingdom,
+        kingdom_id
+        ) VALUES (
+        #{parentId},
+        #{project},
+        #{totalProblems},
+        #{numRuleViolations},
+        #{numViolations},
+        #{scaleCodeReview},
+        #{totalTime},
+        #{typeTest},
+        #{createBy},
+        #{createDate},
+        #{updateBy},
+        #{updateDate},
+        #{description},
+        #{code},
+        #{codeId},
+        #{kingdom},
+        #{kingdomId}
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="updateFpgaStandard">
+        UPDATE cetc_fpga_standard
+        SET
+            total_problems=#{totalProblems},
+            num_rule_violations=#{numRuleViolations},
+            num_violations=#{numViolations},
+            scale_codeReview=#{scaleCodeReview},
+            total_time=#{totalTime},
+            type_test=#{typeTest},
+            update_by=#{updateBy},
+            update_date=#{updateDate},
+            description=#{description}
+        WHERE id=#{id}
+    </update>
+
+    <delete id="delFpgaStandard">
+        DELETE FROM cetc_fpga_standard WHERE id=#{id}
+    </delete>
+
+    <select id="findFpgaStandard" resultMap="fpgaStandardMap">
+        select
+        id,
+        parent_id,
+        project,
+        total_problems,
+        num_rule_violations,
+        num_violations,
+        scale_codeReview,
+        total_time,
+        type_test,
+        create_by,
+        create_date,
+        update_by,
+        update_date,
+        description,
+        code,
+        code_id,
+        kingdom,
+        kingdom_id
+        from cetc_fpga_standard
+        <where>
+            <if test=" kingdomId!=null and kingdomId!='' ">
+                and kingdom_id=#{kingdomId}
+            </if>
+            <if test=" codeId!=null and codeId!='' ">
+                and code_id=#{codeId}
+            </if>
+            <if test=" projectId!=null and projectId!='' ">
+                and parent_id=#{projectId}
+            </if>
+        </where>
+        ORDER BY update_date DESC
+    </select>
+
+    <select id="findFpgaStandardByPid" resultMap="fpgaStandardMap">
+        select
+            id,
+            parent_id,
+            project,
+            total_problems,
+            num_rule_violations,
+            num_violations,
+            scale_codeReview,
+            total_time,
+            type_test,
+            create_by,
+            create_date,
+            update_by,
+            update_date,
+            description,
+            code,
+            code_id,
+            kingdom,
+            kingdom_id
+        from cetc_fpga_standard
+        where parent_id=#{parentId}
+        ORDER BY update_date DESC
+    </select>
+
+    <select id="findByMonth" resultMap="fpgaStandardMap">
+        select
+            id,
+            parent_id,
+            project,
+            total_problems,
+            num_rule_violations,
+            num_violations,
+            scale_codeReview,
+            total_time,
+            type_test,
+            create_by,
+            create_date,
+            update_by,
+            update_date,
+            description,
+            code,
+            code_id,
+            kingdom,
+            kingdom_id
+        from cetc_fpga_standard
+        where
+            DATE_FORMAT(create_date,'%Y-%m') &gt; #{begin}
+          and
+            DATE_FORMAT(create_date,'%Y-%m') &lt; #{end}
+    </select>
+
+    <select id="findByKingdom"  resultMap="fpgaStandardMap">
+        select
+            id,
+            parent_id,
+            project,
+            total_problems,
+            num_rule_violations,
+            num_violations,
+            scale_codeReview,
+            total_time,
+            type_test,
+            create_by,
+            create_date,
+            update_by,
+            update_date,
+            description,
+            code,
+            code_id,
+            kingdom,
+            kingdom_id
+        from cetc_fpga_standard
+        where kingdom_id=#{kingdomId}
+        ORDER BY update_date DESC
+    </select>
+
+</mapper>

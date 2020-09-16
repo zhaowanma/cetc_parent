@@ -1,0 +1,78 @@
+server:
+  port: 9804
+spring:
+  application:
+    name: cetc-log #指定服务名
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    rabbitmq:
+      queue: zipkin
+  rabbitmq:
+    host: cetc-rabbitmq
+    port: 5672
+    username: cetc
+    password: cetc
+    virtual-host: /cetc
+    listener:
+      simple:
+        concurrency: 20
+        max-concurrency: 50
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://cetc-mysql:3306/cetc_log?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-test-query: SELECT 1
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://cetc-eureka:9800/eureka/
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://cetc-oauth2:9801/user-me
+      prefer-token-info: false
+#feign的配置
+feign:
+  hystrix:                                 #此配置表示开启feign的熔断
+    enabled: true
+ribbon:                         #如果路由方式是serviceId的方式，那么ribbon的生效，如果是url的方式，则zuul.host开头的生效
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+hystrix:                        #如果涉及到上传文件，要将超时时间设置的长一些，否则会报异常
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+logging:
+  level:
+    root: info
+    com.cetc: debug
+  file: logs/${spring.application.name}.log
+
+mybatis:
+  mapper-locations: classpath:/mybatis-mappers/*
+  configuration:
+    mapUnderscoreToCamelCase: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:                                #此配置代表查看详细的健康信息
+    health:
+      show-details: always

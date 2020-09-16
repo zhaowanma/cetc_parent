@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>cetc_parent</artifactId>
+        <groupId>com.cetc</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cetc_common</artifactId>
+    <packaging>pom</packaging>
+
+    <description>cetc 公共聚合模块</description>
+    <modules>
+        <module>cetc_common_core</module>
+        <module>cetc_common_model</module>
+        <module>cetc_log_starter</module>
+    </modules>
+
+
+</project>

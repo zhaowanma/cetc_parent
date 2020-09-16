@@ -1,0 +1,50 @@
+server:
+  port: 9808
+spring:
+  application:
+    name: cetc-hpalm
+  redis:
+    host: cetc-redis
+    port: 6379
+    password:
+    timeout: 10s
+    lettuce:
+      pool:
+        min-idle: 10
+        max-idle: 30
+        max-active: 30
+        max-wait: 10000ms
+  rabbitmq:
+    host: cetc-rabbitmq
+    port: 5672
+    username: cetc
+    password: cetc
+    virtual-host: /cetc
+  datasource:
+    url: jdbc:mysql://cetc-mysql:3306/cetc_qc?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+mybatis:
+  mapper-locations: classpath:/mybatis-mappers/*
+logging:
+  level:
+    root: info
+    com.cetc: debug
+  file: logs/${spring.application.name}.log
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://cetc-oauth2:9801/user-me
+      prefer-token-info: false
+
+eureka:
+  client:
+    registerWithEureka: true #服务注册开关
+    fetchRegistry: true  #服务发现发现开关
+    service-url:  #注册到Eureka中心
+      defaultZone:  http://cetc-eureka:9800/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${server.port} #指定实例ID
+    prefer-ip-address: true #访问路径可以显示IP地址
+

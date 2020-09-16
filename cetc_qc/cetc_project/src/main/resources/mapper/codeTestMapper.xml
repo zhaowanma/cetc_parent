@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.CodeTestDao">
+    <resultMap id="codeTestMap" type="com.cetc.model.project.CodeTest">
+        <id property="id" column="id" />
+        <result property="parentId" column="parent_id"/>
+        <result property="project" column="project"/>
+        <result property="testName" column="test_name"/>
+        <result property="creater" column="creater"/>
+        <result property="updater" column="updater"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+    <insert id="addCodeTest">
+        INSERT INTO cetc_project_code_test
+            (
+                parent_id,
+                project,
+                test_name,
+                creater,
+                updater,
+                create_time,
+                update_time,
+                remarks
+            ) VALUES (
+               #{parentId},
+               #{project},
+               #{testName},
+               #{creater},
+               #{updater},
+               #{createTime},
+               #{updateTime},
+               #{remarks}
+                      )
+    </insert>
+    <delete id="deleteOne">
+        DELETE FROM cetc_project_code_test WHERE id = #{id}
+    </delete>
+    <delete id="deleteCodeTest">
+        DELETE FROM cetc_project_code_test
+        <where>
+            <if test="testName != null and testName !=''">
+                AND test_name LIKE CONCAT('%',#{testName},'%')
+            </if>
+            <if test="parentId != null">
+                AND parent_id = #{parentId}
+            </if>
+            <if test="start != null">
+                AND createTime &gt;= #{start}
+            </if>
+            <if test="end != null">
+                AND createTime &lt;  #{end}
+            </if>
+        </where>
+    </delete>
+    <update id="updateCodeTest">
+        UPDATE cetc_project_code_test
+           <set>
+               <if test="testName !=null and testName !=''">
+                   test_name=#{testName},
+               </if>
+               <if test="creater !=null and creater !=''">
+                   creater=#{creater},
+               </if>
+               <if test="updater !=null and updater !=''">
+                   updater=#{updater},
+               </if>
+               <if test="createTime !=null ">
+                   create_time=#{createTime},
+               </if>
+               <if test="updateTime !=null">
+                   update_time=#{updateTime},
+               </if>
+               <if test="remarks !=null and remarks !=''">
+                   remarks=#{remarks},
+               </if>
+           </set>
+          WHERE id = #{id}
+    </update>
+    <select id="searchCodeTest" resultMap="codeTestMap">
+        SELECT * FROM cetc_project_code_test
+         <where>
+             <if test="testName != null and testName !=''">
+                 AND test_name LIKE CONCAT('%',#{testName},'%')
+             </if>
+             <if test="parentId != null">
+                 AND parent_id = #{parentId}
+             </if>
+             <if test="start != null">
+                 AND createTime &gt;= #{start}
+             </if>
+             <if test="end != null">
+                 AND createTime &lt;  #{end}
+             </if>
+         </where>
+    </select>
+</mapper>

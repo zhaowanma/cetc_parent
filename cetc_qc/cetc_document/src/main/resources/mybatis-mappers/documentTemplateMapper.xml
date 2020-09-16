@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.document.dao.DocumentTemplateDao">
+    <resultMap id="documentTemplateMap" type="com.cetc.model.document.DocumentTemplate">
+        <!--定义主键-->
+        <id property="id" column="id" />
+        <!--property:主键在pojo中的属性名-->
+        <!--column:主键在数据库中的列名-->
+        <result property="docName" column="doc_name"/>
+        <result property="docType" column="doc_type"/>
+        <result property="docLocation" column="doc_location"/>
+        <result property="totalSize" column="total_size"/>
+        <result property="uploader" column="uploader"/>
+        <result property="secretGrade" column="secret_grade"/>
+
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateDate" column="update_date"/>
+
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+
+
+    <insert id="save">
+        INSERT INTO  cetc_document_template (
+           doc_name,
+           doc_type,
+           doc_location,
+           total_size,
+           uploader,
+           secret_grade,
+           create_date,
+           create_by,
+           update_date,
+           update_by,
+           remarks
+        ) VALUES
+          (
+           #{docName},
+           #{docType},
+           #{docLocation},
+           #{totalSize},
+           #{uploader},
+           #{secretGrade},
+           #{createDate},
+           #{createBy},
+           #{updateDate},
+           #{updateBy},
+           #{remarks}
+          )
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="fuzzyQueryList" resultMap="documentTemplateMap">
+        SELECT * FROM cetc_document_template
+        <where>
+            <if test="docName != null and docName !=''">
+                <bind name="_docName" value="'%'+docName+'%'"/>
+                AND doc_name LIKE #{_docName}
+            </if>
+
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM cetc_document_template WHERE id=#{id}
+    </delete>
+
+    <update id="update">
+        UPDATE cetc_document_template
+        <set>
+            <if test="docName !=null and docName !=''">
+                doc_name=#{docName},
+            </if>
+            <if test="docType !=null and docType !=''">
+                doc_type=#{docType},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <select id="findById" resultMap="documentTemplateMap">
+        select * FROM cetc_document_template WHERE id=#{id}
+    </select>
+
+</mapper>

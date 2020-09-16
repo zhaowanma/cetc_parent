@@ -1,0 +1,83 @@
+server:
+  port: 9801
+spring: 
+  application:  
+    name: cetc-auth #指定服务名
+  redis:
+    host: cetc-redis
+    port: 6379
+    password:
+    timeout: 10s
+    lettuce:
+      pool:
+        min-idle: 0
+        max-idle: 8
+        max-active: 8
+        max-wait: 1000ms
+      shutdown-timeout: 100ms
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    rabbitmq:
+      queue: zipkin
+  rabbitmq:
+    host: cetc-rabbitmq
+    port: 5672
+    username: cetc
+    password: cetc
+    virtual-host: /cetc
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true #是否将自己注册到Eureka服务中，本身就是所有无需注册
+    fetchRegistry: true
+    service-url:
+      defaultZone: http://cetc-eureka:9800/eureka
+
+#feign的配置
+feign:
+  hystrix:                                 #此配置表示开启feign的熔断
+    enabled: true
+ribbon:                         #如果路由方式是serviceId的方式，那么ribbon的生效，如果是url的方式，则zuul.host开头的生效
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+hystrix:                        #如果涉及到上传文件，要将超时时间设置的长一些，否则会报异常
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+#暴露监控端点
+management:
+  health:                                 #Springboot不支持6版本以上的ES检查，解决健康检查ES的报错问题
+    elasticsearch:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:                                #此配置代表查看详细的健康信息
+    health:
+      show-details: always
+
+mybatis:
+  mapper-locations: classpath:/mybatis-mappers/*
+  configuration:
+    mapUnderscoreToCamelCase: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://cetc-oauth2:9801/user-me
+      prefer-token-info: false
+logging:
+  level:
+    root: info
+    com.cetc: debug
+  file: logs/${spring.application.name}.log

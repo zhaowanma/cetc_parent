@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- office插件js begin 必须引入-->
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="pageoffice.js" id="po_js_main"></script>
+    <!-- end -->
+</head>
+<body>
+<a id="aaa" href="#"></a>
+<!--<a href="javascript:POBrowser.openWindowModeless();">打开文件</a>-->
+</body>
+<script type="text/javascript">
+
+    window.onload = function (){
+        var hostUrl="/word";
+        var href="javascript:POBrowser.openWindowModeless('"+hostUrl+"','width=1050px;height=1100px;fullscreen=yes;');"
+        console.log(href)
+        // 最新的打开方式，width和height为打开的最外部边框大小
+        document.getElementById("aaa").setAttribute("href",href);
+        document.getElementById("aaa").click();
+
+    }
+   window.close()
+
+
+</script>
+</html>

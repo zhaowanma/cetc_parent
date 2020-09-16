@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>cetc_parent</artifactId>
+        <groupId>com.cetc</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cetc_zipkin</artifactId>
+    <name>cetc_zipkin</name>
+      <dependencies>
+          <!--jdbc相关-->
+          <dependency>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-starter-jdbc</artifactId>
+          </dependency>
+
+          <!--zipkin-->
+          <dependency>
+              <groupId>io.zipkin.java</groupId>
+              <artifactId>zipkin-server</artifactId>
+              <version>${zipkin.version}</version>
+              <exclusions>
+                  <exclusion>
+                      <groupId>org.springframework.boot</groupId>
+                      <artifactId>spring-boot-starter-log4j2</artifactId>
+                  </exclusion>
+              </exclusions>
+          </dependency>
+
+          <dependency>
+              <groupId>io.zipkin.java</groupId>
+              <artifactId>zipkin-autoconfigure-ui</artifactId>
+              <version>${zipkin.version}</version>
+          </dependency>
+
+
+          <!--eureka-->
+          <dependency>
+              <groupId>org.springframework.cloud</groupId>
+              <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+          </dependency>
+
+          <!--使用mysql存储-->
+
+
+          <dependency>
+              <groupId>io.zipkin.java</groupId>
+              <artifactId>zipkin-autoconfigure-collector-rabbitmq</artifactId>
+              <version>${zipkin.version}</version>
+          </dependency>
+
+          <dependency>
+              <groupId>io.zipkin.java</groupId>
+              <artifactId>zipkin-autoconfigure-storage-mysql</artifactId>
+              <version>${zipkin.version}</version>
+          </dependency>
+
+          <dependency>
+              <groupId>io.zipkin.java</groupId>
+              <artifactId>zipkin-storage-mysql</artifactId>
+              <version>${zipkin-storage-mysql.version}</version>
+          </dependency>
+
+          <dependency>
+              <groupId>org.jooq</groupId>
+              <artifactId>jooq</artifactId>
+              <version>${jooq.version}</version>
+          </dependency>
+          <dependency>
+              <groupId>mysql</groupId>
+              <artifactId>mysql-connector-java</artifactId>
+          </dependency>
+
+
+      </dependencies>
+    <build>
+        <finalName>${project.artifactId}</finalName><!--打jar包去掉版本号-->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>com.spotify</groupId>-->
+                <!--<artifactId>docker-maven-plugin</artifactId>-->
+                <!--<version>0.4.13</version>-->
+                <!--<configuration>-->
+                    <!--<imageName>hub.atcetc.com/library/${project.artifactId}:${project.version}</imageName>-->
+                    <!--<baseImage>jdk1.8</baseImage>-->
+                    <!--<entryPoint>["java", "-jar","/${project.build.finalName}.jar"]</entryPoint>-->
+                    <!--<resources>-->
+                        <!--<resource>-->
+                            <!--<targetPath>/</targetPath>-->
+                            <!--<directory>${project.build.directory}</directory>-->
+                            <!--<include>${project.build.finalName}.jar</include>-->
+                        <!--</resource>-->
+                    <!--</resources>-->
+                    <!--<dockerHost>http://192.168.0.104:2375</dockerHost>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+        </plugins>
+    </build>
+</project>

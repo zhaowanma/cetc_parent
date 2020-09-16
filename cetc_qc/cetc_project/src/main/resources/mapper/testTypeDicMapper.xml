@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.TestTypeDicDao">
+    <resultMap id="pdMap" type="com.cetc.project.entities.TestTypeDic">
+
+        <result property="projectId" column="project_id"/>
+        <result property="dicId" column="dic_id"/>
+
+    </resultMap>
+    <insert id="addptd">
+        INSERT INTO cetc_test_type_dic(
+                       project_id,
+                       dic_id)
+                       VALUES(
+                      #{projectId},
+                      #{dicId})
+    </insert>
+    <delete id="delptd">
+        DELETE FROM cetc_test_type_dic WHERE project_id = #{projectId}
+    </delete>
+    <select id="findByProjectId" resultMap="pdMap">
+        SELECT * FROM cetc_test_type_dic WHERE project_id = #{projectId}
+    </select>
+
+
+
+</mapper>

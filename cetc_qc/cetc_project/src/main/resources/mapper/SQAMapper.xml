@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cetc.project.mapper.SqaDao" >
+  <resultMap id="BaseResultMap" type="com.cetc.model.project.SQA" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="total_num" property="totalNum" jdbcType="INTEGER" />
+    <result column="scope" property="scope" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="work_source" property="workSource" jdbcType="VARCHAR" />
+    <result column="work_ensure" property="workEnsure" jdbcType="VARCHAR" />
+    <result column="required_completion" property="requiredCompletion" jdbcType="VARCHAR" />
+    <result column="qc_check_by" property="qcCheckBy" jdbcType="VARCHAR" />
+    <result column="check_by" property="checkBy" jdbcType="VARCHAR" />
+    <result column="check_work_desc" property="checkWorkDesc" jdbcType="VARCHAR" />
+    <result column="complete_iden" property="completeIden" jdbcType="VARCHAR" />
+    <result column="classification" property="classification" jdbcType="VARCHAR" />
+    <result column="check_group" property="checkGroup" jdbcType="VARCHAR" />
+    <result column="complete_status" property="completeStatus" jdbcType="CHAR" />
+    <result column="reason_self" property="reasonSelf" jdbcType="CHAR" />
+    <result column="uncomplete_desc" property="uncompleteDesc" jdbcType="VARCHAR" />
+    <result column="oa_first_notice" property="oaFirstNotice" jdbcType="VARCHAR" />
+    <result column="department_leader" property="departmentLeader" jdbcType="VARCHAR" />
+    <result column="leader" property="leader" jdbcType="VARCHAR" />
+    <result column="seat" property="seat" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+    <result column="code_id" property="codeId" jdbcType="INTEGER" />
+    <result column="kingdom_id" property="kingdomId" jdbcType="INTEGER" />
+    <result column="check_object" property="checkObject" jdbcType="VARCHAR" />
+    <result column="matter_count" property="matterCount" jdbcType="INTEGER" />
+    <result column="allocation_to" property="allocationTo" jdbcType="VARCHAR" />
+    <result column="system_or_configuration_items" property="systemOrConfigurationItems" jdbcType="VARCHAR" />
+    <result column="sqa_check_month" property="sqaCheckMonth" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, total_num, scope, code, work_source, work_ensure, required_completion, qc_check_by, 
+    check_by, check_work_desc, complete_iden, classification, check_group, complete_status, 
+    reason_self, uncomplete_desc, oa_first_notice, department_leader, leader, seat, create_by, 
+    create_date, update_by, update_date, remarks, del_flag, code_id,kingdom_id, check_object, matter_count,
+    allocation_to, system_or_configuration_items, sqa_check_month
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from cetc_sqa
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from cetc_sqa
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cetc.model.project.SQA" >
+    insert into cetc_sqa (id, total_num, scope, 
+      code, work_source, work_ensure, 
+      required_completion, qc_check_by, check_by, 
+      check_work_desc, complete_iden, classification, 
+      check_group, complete_status, reason_self, 
+      uncomplete_desc, oa_first_notice, department_leader, 
+      leader, seat, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag, code_id, kingdom_id,
+      check_object, matter_count, allocation_to, 
+      system_or_configuration_items, sqa_check_month
+      )
+    values (#{id,jdbcType=INTEGER}, #{totalNum,jdbcType=INTEGER}, #{scope,jdbcType=VARCHAR},
+      #{code,jdbcType=VARCHAR}, #{workSource,jdbcType=VARCHAR}, #{workEnsure,jdbcType=VARCHAR}, 
+      #{requiredCompletion,jdbcType=VARCHAR}, #{qcCheckBy,jdbcType=VARCHAR}, #{checkBy,jdbcType=VARCHAR}, 
+      #{checkWorkDesc,jdbcType=VARCHAR}, #{completeIden,jdbcType=VARCHAR}, #{classification,jdbcType=VARCHAR}, 
+      #{checkGroup,jdbcType=VARCHAR}, #{completeStatus,jdbcType=CHAR}, #{reasonSelf,jdbcType=CHAR}, 
+      #{uncompleteDesc,jdbcType=VARCHAR}, #{oaFirstNotice,jdbcType=VARCHAR}, #{departmentLeader,jdbcType=VARCHAR}, 
+      #{leader,jdbcType=VARCHAR}, #{seat,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}, #{codeId,jdbcType=INTEGER},#{kingdomId,jdbcType=INTEGER},
+      #{checkObject,jdbcType=VARCHAR}, #{matterCount,jdbcType=INTEGER}, #{allocationTo,jdbcType=VARCHAR}, 
+      #{systemOrConfigurationItems,jdbcType=VARCHAR}, #{sqaCheckMonth,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cetc.model.project.SQA" >
+    insert into cetc_sqa
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="totalNum != null" >
+        total_num,
+      </if>
+      <if test="scope != null" >
+        scope,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="workSource != null" >
+        work_source,
+      </if>
+      <if test="workEnsure != null" >
+        work_ensure,
+      </if>
+      <if test="requiredCompletion != null" >
+        required_completion,
+      </if>
+      <if test="qcCheckBy != null" >
+        qc_check_by,
+      </if>
+      <if test="checkBy != null" >
+        check_by,
+      </if>
+      <if test="checkWorkDesc != null" >
+        check_work_desc,
+      </if>
+      <if test="completeIden != null" >
+        complete_iden,
+      </if>
+      <if test="classification != null" >
+        classification,
+      </if>
+      <if test="checkGroup != null" >
+        check_group,
+      </if>
+      <if test="completeStatus != null" >
+        complete_status,
+      </if>
+      <if test="reasonSelf != null" >
+        reason_self,
+      </if>
+      <if test="uncompleteDesc != null" >
+        uncomplete_desc,
+      </if>
+      <if test="oaFirstNotice != null" >
+        oa_first_notice,
+      </if>
+      <if test="departmentLeader != null" >
+        department_leader,
+      </if>
+      <if test="leader != null" >
+        leader,
+      </if>
+      <if test="seat != null" >
+        seat,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+      <if test="codeId != null" >
+        code_id,
+      </if>
+      <if test="kingdomId != null" >
+        kingdom_id,
+      </if>
+      <if test="checkObject != null" >
+        check_object,
+      </if>
+      <if test="matterCount != null" >
+        matter_count,
+      </if>
+      <if test="allocationTo != null" >
+        allocation_to,
+      </if>
+      <if test="systemOrConfigurationItems != null" >
+        system_or_configuration_items,
+      </if>
+      <if test="sqaCheckMonth != null" >
+        sqa_check_month,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="totalNum != null" >
+        #{totalNum,jdbcType=INTEGER},
+      </if>
+      <if test="scope != null" >
+        #{scope,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="workSource != null" >
+        #{workSource,jdbcType=VARCHAR},
+      </if>
+      <if test="workEnsure != null" >
+        #{workEnsure,jdbcType=VARCHAR},
+      </if>
+      <if test="requiredCompletion != null" >
+        #{requiredCompletion,jdbcType=VARCHAR},
+      </if>
+      <if test="qcCheckBy != null" >
+        #{qcCheckBy,jdbcType=VARCHAR},
+      </if>
+      <if test="checkBy != null" >
+        #{checkBy,jdbcType=VARCHAR},
+      </if>
+      <if test="checkWorkDesc != null" >
+        #{checkWorkDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="completeIden != null" >
+        #{completeIden,jdbcType=VARCHAR},
+      </if>
+      <if test="classification != null" >
+        #{classification,jdbcType=VARCHAR},
+      </if>
+      <if test="checkGroup != null" >
+        #{checkGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="completeStatus != null" >
+        #{completeStatus,jdbcType=CHAR},
+      </if>
+      <if test="reasonSelf != null" >
+        #{reasonSelf,jdbcType=CHAR},
+      </if>
+      <if test="uncompleteDesc != null" >
+        #{uncompleteDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="oaFirstNotice != null" >
+        #{oaFirstNotice,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentLeader != null" >
+        #{departmentLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="leader != null" >
+        #{leader,jdbcType=VARCHAR},
+      </if>
+      <if test="seat != null" >
+        #{seat,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="codeId != null" >
+        #{codeId,jdbcType=INTEGER},
+      </if>
+      <if test="kingdomId != null" >
+        #{kingdomId,jdbcType=INTEGER},
+      </if>
+      <if test="checkObject != null" >
+        #{checkObject,jdbcType=VARCHAR},
+      </if>
+      <if test="matterCount != null" >
+        #{matterCount,jdbcType=INTEGER},
+      </if>
+      <if test="allocationTo != null" >
+        #{allocationTo,jdbcType=VARCHAR},
+      </if>
+      <if test="systemOrConfigurationItems != null" >
+        #{systemOrConfigurationItems,jdbcType=VARCHAR},
+      </if>
+      <if test="sqaCheckMonth != null" >
+        #{sqaCheckMonth,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cetc.model.project.SQA" >
+    update cetc_sqa
+    <set >
+      <if test="totalNum != null" >
+        total_num = #{totalNum,jdbcType=INTEGER},
+      </if>
+      <if test="scope != null" >
+        scope = #{scope,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="workSource != null" >
+        work_source = #{workSource,jdbcType=VARCHAR},
+      </if>
+      <if test="workEnsure != null" >
+        work_ensure = #{workEnsure,jdbcType=VARCHAR},
+      </if>
+      <if test="requiredCompletion != null" >
+        required_completion = #{requiredCompletion,jdbcType=VARCHAR},
+      </if>
+      <if test="qcCheckBy != null" >
+        qc_check_by = #{qcCheckBy,jdbcType=VARCHAR},
+      </if>
+      <if test="checkBy != null" >
+        check_by = #{checkBy,jdbcType=VARCHAR},
+      </if>
+      <if test="checkWorkDesc != null" >
+        check_work_desc = #{checkWorkDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="completeIden != null" >
+        complete_iden = #{completeIden,jdbcType=VARCHAR},
+      </if>
+      <if test="classification != null" >
+        classification = #{classification,jdbcType=VARCHAR},
+      </if>
+      <if test="checkGroup != null" >
+        check_group = #{checkGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="completeStatus != null" >
+        complete_status = #{completeStatus,jdbcType=CHAR},
+      </if>
+      <if test="reasonSelf != null" >
+        reason_self = #{reasonSelf,jdbcType=CHAR},
+      </if>
+      <if test="uncompleteDesc != null" >
+        uncomplete_desc = #{uncompleteDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="oaFirstNotice != null" >
+        oa_first_notice = #{oaFirstNotice,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentLeader != null" >
+        department_leader = #{departmentLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="leader != null" >
+        leader = #{leader,jdbcType=VARCHAR},
+      </if>
+      <if test="seat != null" >
+        seat = #{seat,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="codeId != null" >
+        code_id = #{codeId,jdbcType=INTEGER},
+      </if>
+      <if test="kingdomId != null" >
+        kingdom_id = #{kingdomId,jdbcType=INTEGER},
+      </if>
+      <if test="checkObject != null" >
+        check_object = #{checkObject,jdbcType=VARCHAR},
+      </if>
+      <if test="matterCount != null" >
+        matter_count = #{matterCount,jdbcType=INTEGER},
+      </if>
+      <if test="allocationTo != null" >
+        allocation_to = #{allocationTo,jdbcType=VARCHAR},
+      </if>
+      <if test="systemOrConfigurationItems != null" >
+        system_or_configuration_items = #{systemOrConfigurationItems,jdbcType=VARCHAR},
+      </if>
+      <if test="sqaCheckMonth != null" >
+        sqa_check_month = #{sqaCheckMonth,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cetc.model.project.SQA" >
+    update cetc_sqa
+    set total_num = #{totalNum,jdbcType=INTEGER},
+      scope = #{scope,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      work_source = #{workSource,jdbcType=VARCHAR},
+      work_ensure = #{workEnsure,jdbcType=VARCHAR},
+      required_completion = #{requiredCompletion,jdbcType=VARCHAR},
+      qc_check_by = #{qcCheckBy,jdbcType=VARCHAR},
+      check_by = #{checkBy,jdbcType=VARCHAR},
+      check_work_desc = #{checkWorkDesc,jdbcType=VARCHAR},
+      complete_iden = #{completeIden,jdbcType=VARCHAR},
+      classification = #{classification,jdbcType=VARCHAR},
+      check_group = #{checkGroup,jdbcType=VARCHAR},
+      complete_status = #{completeStatus,jdbcType=CHAR},
+      reason_self = #{reasonSelf,jdbcType=CHAR},
+      uncomplete_desc = #{uncompleteDesc,jdbcType=VARCHAR},
+      oa_first_notice = #{oaFirstNotice,jdbcType=VARCHAR},
+      department_leader = #{departmentLeader,jdbcType=VARCHAR},
+      leader = #{leader,jdbcType=VARCHAR},
+      seat = #{seat,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      code_id = #{codeId,jdbcType=INTEGER},
+      kingdom_id = #{kingdomId,jdbcType=INTEGER},
+      check_object = #{checkObject,jdbcType=VARCHAR},
+      matter_count = #{matterCount,jdbcType=INTEGER},
+      allocation_to = #{allocationTo,jdbcType=VARCHAR},
+      system_or_configuration_items = #{systemOrConfigurationItems,jdbcType=VARCHAR},
+      sqa_check_month = #{sqaCheckMonth,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findByParent" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cetc_sqa
+    <where>
+      <if test="workSource != null and workSource != ''">
+          work_source LIKE CONCAT('%',#{workSource},'%')
+      </if>
+      <if test="codeId != null">
+          AND code_id = #{codeId}
+      </if>
+    </where>
+      order by update_date DESC
+  </select>
+  <select id="pageShow" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cetc_sqa
+    <where>
+      <if test="kingdomId != null and kingdomId != ''">
+        kingdom_id = #{kingdomId}
+      </if>
+      <if test="codeId != null and codeId != ''">
+       AND code_id = #{codeId}
+      </if>
+      <if test="checkGroup != null and checkGroup != ''">
+        AND check_group = #{checkGroup}
+      </if>
+      <if test="workSource != null and workSource != ''">
+        AND work_source LIKE CONCAT('%',#{workSource},'%')
+      </if>
+      <if test="completeStatus != null and completeStatus != ''">
+        AND complete_status = #{completeStatus}
+      </if>
+      <if test="classification != null and classification != ''">
+       AND  classification LIKE CONCAT('%',#{classification},'%')
+      </if>
+      <if test="createDate != null and updateDate != null">
+       AND  create_date BETWEEN #{createDate} AND #{updateDate}
+      </if>
+    </where>
+    order by update_date DESC
+  </select>
+  <select id="getMaxIndex"  resultType="java.lang.Integer">
+    select max(total_num) from cetc_sqa where del_flag = 0
+  </select>
+
+  <select id="findByKingDomName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cetc_sqa
+    <where>
+      <if test="kingdomId != null and kingdomId != ''">
+        kingdom_id = #{kingdomId}
+      </if>
+    </where>
+    order by update_date DESC
+  </select>
+
+  <select id="findByCode" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cetc_sqa
+    <where>
+      <if test="codeId != null and codeId != ''">
+        code_id = #{codeId}
+      </if>
+    </where>
+  </select>
+<!--tianby-->
+  <delete id="deleteSQA">
+     delete from cetc_sqa
+       <where>
+         <if test="kingdomId != null">
+           and kingdom_id = #{kingdomId}
+         </if>
+         <if test="codeId != null">
+           and code_id = #{codeId}
+         </if>
+       </where>
+  </delete>
+</mapper>

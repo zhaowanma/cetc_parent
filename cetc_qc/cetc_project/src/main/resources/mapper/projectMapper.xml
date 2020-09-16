@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.ProjectDao">
+    <resultMap id="projectMap" type="com.cetc.model.project.Project">
+        <id property="id" column="id" />
+        <result property="parentId" column="parent_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="kingdom" column="kingdom"/>
+        <result property="kingdomId" column="kingdom_id"/>
+        <result property="testGrade" column="test_grade"/>
+        <result property="testLeader" column="test_leader"/>
+        <result property="leader" column="leader"/>
+        <result property="num" column="num"/>
+        <result property="isCompensate" column="is_compensate"/>
+        <result property="isYh" column="is_yh"/>
+        <result property="isZy" column="is_zy"/>
+        <result property="assignTime" column="assign_time"/>
+        <result property="isApply" column="is_apply"/>
+        <result property="status" column="status"/>
+        <result property="almDomainName" column="alm_domain_name"/>
+        <result property="almProjectName" column="alm_project_name"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="softer" column="softer"/>
+        <result property="codeSize" column="code_size"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+
+    <insert id="addProject">
+        INSERT INTO cetc_project(
+             parent_id,
+             name,
+             code,
+             kingdom,
+             kingdom_id,
+             test_grade,
+             test_leader,
+             leader,
+             num,
+             create_by,
+             create_date,
+             update_by,
+             update_date,
+             assign_time,
+             alm_domain_name,
+             alm_project_name
+        )VALUES(
+            #{parentId},
+            #{name},
+            #{code},
+            #{kingdom},
+            #{kingdomId},
+            #{testGrade},
+            #{testLeader},
+            #{leader},
+            #{num},
+            #{createBy},
+            #{createDate},
+            #{updateBy},
+            #{updateDate},
+            #{assignTime},
+            #{almDomainName},
+            #{almProjectName}
+            )
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <insert id="importTemplateProject">
+        INSERT INTO cetc_project(
+        parent_id,
+        name,
+        code,
+        kingdom,
+        kingdom_id,
+        test_grade,
+        test_leader,
+        leader,
+        num,
+        create_by,
+        create_date,
+        update_by,
+        update_date,
+        is_compensate,
+        is_yh,
+        is_zy,
+        assign_time,
+        is_apply,
+        status,
+        alm_domain_name,
+        alm_project_name
+        )VALUES(
+        #{parentId},
+        #{name},
+        #{code},
+        #{kingdom},
+        #{kingdomId},
+        #{testGrade},
+        #{testLeader},
+        #{leader},
+        #{num},
+        #{createBy},
+        #{createDate},
+        #{updateBy},
+        #{updateDate},
+        #{isCompensate},
+        #{isYh},
+        #{isZy},
+        #{assignTime},
+        #{isApply},
+        #{status},
+        #{almDomainName},
+        #{almProjectName}
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <delete id="deleteOne">
+        DELETE FROM cetc_project WHERE id = #{id}
+    </delete>
+    <delete id="deleteProject">
+        DELETE FROM cetc_project
+        <where>
+            <if test="createBy != null and createBy !=''">
+                AND  create_by = #{createBy}
+            </if>
+            <if test="kingdomId != null">
+                AND kingdom_id = #{kingdomId}
+            </if>
+            <if test="parentId != null">
+                AND parent_id = #{parentId}
+            </if>
+            <if test="name != null and name !=''">
+                AND name = #{name}
+            </if>
+            <if test="testGrade != null and testGrade !=''">
+                AND test_grade = #{testGrade}
+            </if>
+            <if test="testLeader != null and testLeader !=''">
+                AND  test_leader = #{testLeader}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="start != null">
+                AND create_date &gt;= #{start}
+            </if>
+            <if test="end != null">
+                AND create_date &lt; #{end}
+            </if>
+        </where>
+    </delete>
+
+
+    <select id="getLastNum" resultType="java.lang.String">
+        SELECT num FROM cetc_project ORDER BY num DESC LIMIT 0,1
+    </select>
+
+    <select id="findOne" resultMap="projectMap">
+        SELECT
+           *
+        FROM cetc_project
+        WHERE id = #{id}
+    </select>
+
+    <update id="update">
+        update cetc_project
+        <set>
+            <if test="name != null and name !=''">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+
+            <if test="kingdom != null and kingdom !=''">
+                kingdom = #{kingdom,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null and code !=''">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="testGrade != null and testGrade !=''">
+                test_grade = #{testGrade,jdbcType=VARCHAR},
+            </if>
+            <if test="testLeader != null and testLeader !=''">
+                test_leader = #{testLeader,jdbcType=VARCHAR},
+            </if>
+            <if test="num != null and num !=''">
+                num = #{num,jdbcType=VARCHAR},
+            </if>
+            <if test="almDomainName!= null and almDomainName !=''">
+                alm_domain_name = #{almDomainName,jdbcType=VARCHAR},
+            </if>
+            <if test="almProjectName!= null and almProjectName !=''">
+                alm_project_name = #{almProjectName,jdbcType=VARCHAR},
+            </if>
+
+            <if test="isApply!= null">
+                is_apply = #{isApply,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="isZy != null">
+                is_zy = #{isZy,jdbcType=INTEGER},
+            </if>
+
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy,jdbcType=VARCHAR},
+            </if>
+
+            <if test="softer != null and softer !=''">
+                softer = #{softer,jdbcType=VARCHAR},
+            </if>
+            <if test="codeSize != null and codeSize !=''">
+                code_size = #{codeSize,jdbcType=VARCHAR},
+            </if>
+
+            <if test="remark != null and remark !=''">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <insert id="addJoins">
+        INSERT INTO cetc_project_joins (
+                project_id,
+                user_name
+        )
+        VALUES (
+                #{projectId},
+                #{userName}
+               )
+    </insert>
+    <delete id="delJoins">
+        DELETE FROM cetc_project_joins where project_id = #{projectId}
+    </delete>
+
+    <select id="findJoins" resultType="java.lang.String">
+        select user_name from cetc_project_joins where project_id = #{projectId}
+    </select>
+
+    <select id="queryList" resultMap="projectMap">
+        select * from cetc_project
+        <where>
+            <if test="createBy != null and createBy !=''">
+                AND  create_by = #{createBy}
+            </if>
+            <if test="kingdomId != null">
+                AND kingdom_id = #{kingdomId}
+            </if>
+            <if test="parentId != null">
+                AND parent_id = #{parentId}
+            </if>
+            <if test="name != null and name !=''">
+                <bind name="_name" value="'%'+name+'%'"/>
+                AND name LIKE #{_name}
+            </if>
+            <if test="testGrade != null and testGrade !=''">
+                AND test_grade = #{testGrade}
+            </if>
+            <if test="testLeader != null and testLeader !=''">
+                AND  test_leader = #{testLeader}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="start != null">
+                AND create_date &gt;= #{start}
+            </if>
+            <if test="end != null">
+                AND create_date &lt; #{end}
+            </if>
+        </where>
+        order by create_date DESC
+    </select>
+
+    <select id="fuzzyQueryList" resultMap="projectMap">
+        select * from cetc_project
+        <where>
+            <if test="createBy != null and createBy !=''">
+                AND  create_by = #{createBy}
+            </if>
+            <if test="kingdomId != null">
+                AND kingdom_id = #{kingdomId}
+            </if>
+            <if test="parentId != null">
+                AND parent_id = #{parentId}
+            </if>
+            <if test="name != null and name !=''">
+                <bind name="_name" value="'%'+name+'%'"/>
+                AND name LIKE #{_name}
+            </if>
+            <if test="testGrade != null and testGrade !=''">
+                AND test_grade = #{testGrade}
+            </if>
+            <if test="testLeader != null and testLeader !=''">
+                AND  test_leader = #{testLeader}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="start != null">
+                AND create_date &gt;= #{start}
+            </if>
+            <if test="end != null">
+                AND create_date &lt; #{end}
+            </if>
+        </where>
+        order by create_date DESC
+    </select>
+
+    <select id="findProjectByField" resultMap="projectMap">
+        select * from cetc_project
+        <where>
+            <if test="createBy != null and createBy !=''">
+                AND  create_by = #{createBy}
+            </if>
+            <if test="kingdomId != null">
+                AND kingdom_id = #{kingdomId}
+            </if>
+            <if test="parentId != null">
+                AND parent_id = #{parentId}
+            </if>
+            <if test="name != null and name !=''">
+                AND name=#{name}
+            </if>
+            <if test="num != null and num !=''">
+                AND num=#{num}
+            </if>
+            <if test="almProjectName != null and almProjectName !=''">
+                AND alm_project_name=#{almProjectName}
+            </if>
+            <if test="testGrade != null and testGrade !=''">
+                AND test_grade = #{testGrade}
+            </if>
+            <if test="testLeader != null and testLeader !=''">
+                AND  test_leader = #{testLeader}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="isZy!=null">
+                and is_zy=#{isZy}
+            </if>
+        </where>
+        order by create_date DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,34 @@
+server:
+  port: 83
+spring:
+  application:
+    name: cetc-monitor
+  security:
+    user:
+      name: "cetc"
+      password: "cetc"
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    health-check-url-path: /actuator/health
+    prefer-ip-address: true
+    metadata-map:
+      user.name: ${spring.security.user.name}
+      user.password: ${spring.security.user.password}
+  client:
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://cetc-eureka:9800/eureka/
+
+#暴露监控端点
+management:
+  health:                                 #Springboot不支持6版本以上的ES检查，解决健康检查ES的报错问题
+    elasticsearch:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:                                #此配置代表查看详细的健康信息
+    health:
+      show-details: always

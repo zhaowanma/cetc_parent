@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.dic.dao.DicValueDao">
+
+    <resultMap id="dicValueMap" type="com.cetc.model.dic.DicValue">
+        <id column="id" property="id"></id>
+        <result column="dic_key" property="key"></result>
+        <result column="dic_value" property="value"></result>
+        <result column="orders" property="order"></result>
+        <result column="sys" property="sys"></result>
+        <result column="update_time" property="updateTime"></result>
+        <result column="remarks" property="remarks"></result>
+        <result column="status" property="status"></result>
+        <result column="dic_id" property="dicId"></result>
+    </resultMap>
+
+    <sql id="fuzzyQuery">
+        <where>
+            <if test="params.key != null and params.key != ''">
+                <bind name="_key" value="'%' + params.key + '%'"/>
+                and dic_key like #{_key}
+            </if>
+           and dic_id=#{dicId} order by orders asc
+        </where>
+    </sql>
+
+    <select id="queryAll" resultMap="dicValueMap">
+        select * from sys_dic_value <include refid="fuzzyQuery" />
+    </select>
+
+    <select id="saveDicValue">
+        insert into sys_dic_value(dic_key,dic_value,orders,sys,update_time,remarks,status,dic_id) values (#{key},#{value},#{order},#{sys},#{updateTime},#{remarks},#{status},#{dicId})
+    </select>
+
+    <select id="queryById" resultMap="dicValueMap">
+        select * from sys_dic_value where id =#{id}
+    </select>
+
+    <select id="queryByKey" resultMap="dicValueMap">
+        select * from sys_dic_value where dic_key=#{key} and dic_id=#{dicId}
+    </select>
+    <update id="updateById">
+        update sys_dic_value
+        <set>
+            <if test="key!= null and key !=''">
+                dic_key = #{key,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null and value != ''">
+                dic_value = #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="order != null">
+                orders = #{order,jdbcType=INTEGER},
+            </if>
+            <if test="sys != null">
+                sys = #{sys,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteById" >
+     delete from sys_dic_value where id = #{id}
+
+    </delete>
+
+    <delete id="deleteByDicId">
+        delete from sys_dic_value where dic_id = #{dicId}
+
+    </delete>
+
+    <select id="queryAllDicValuesByDicType" resultMap="dicValueMap">
+        select * from sys_dic_value where dic_id=#{dicId} and status=1
+    </select>
+</mapper>
