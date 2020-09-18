@@ -8,6 +8,8 @@ import com.cetc.project.service.ProjectExcuteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * 测试执行
  */
@@ -24,8 +26,8 @@ public class ProjectExcuteController {
     }
 
     @PostMapping("pageList")
-    public Result pageList(@RequestBody SearchProjectExcute searchExcute){
-        return projectExcuteService.findPageExcuteByProject(searchExcute);
+    public Result pageList(@RequestBody Map map){
+        return projectExcuteService.findPageExcuteByMonthCommit(map);
     }
 
     @DeleteMapping("deleteExcute/{id}")

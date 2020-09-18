@@ -18,6 +18,9 @@ public class ProjectExcute implements Serializable {
     private Date excuteDate;
     private String excuteLocal;
     private Integer excuters;
+
+    private Long monthCommitId;
+
     private Integer examples;
     private boolean passFlag;
     private Date createDate;
@@ -27,6 +30,14 @@ public class ProjectExcute implements Serializable {
     private String passer;
     private Date passDate;
     private int useTime;
+
+    public Long getMonthCommitId() {
+        return monthCommitId;
+    }
+
+    public void setMonthCommitId(Long monthCommitId) {
+        this.monthCommitId = monthCommitId;
+    }
 
     public Long getId() {
         return id;

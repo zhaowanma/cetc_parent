@@ -40,6 +40,7 @@
             project,
             excute_date,
             excute_local,
+            month_commit_id,
             excuters,
             examples,
             use_time,
@@ -63,6 +64,7 @@
             #{project},
             #{excuteDate},
             #{excuteLocal},
+            #{monthCommitId},
             #{excuters},
             #{examples},
             #{useTime},
@@ -76,9 +78,16 @@
         )
 
     </insert>
+
     <select id="findProjectExcuteByProject" resultMap="excuteMap">
         select * from cetc_project_excute where project_id = #{projectId} ORDER BY update_date DESC
     </select>
+
+    <select id="findProjectExcuteByMonthCommitId" resultMap="excuteMap">
+        select * from cetc_project_excute where month_commit_id = #{monthCommitId} ORDER BY update_date DESC
+    </select>
+
+
     <update id="updateProjectExcute">
         update cetc_project_excute
        <set>

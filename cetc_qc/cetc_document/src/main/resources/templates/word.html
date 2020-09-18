@@ -12,11 +12,67 @@
 <!--<input id="Button4" type="button" value="隐藏/显示 Office工具栏"  onclick="return Button4_onclick()" />-->
 
 <div style="width:auto;height:1000px;" th:utext="${template}"> </div>
+
+<script type="text/javascript">
+    //获取后台定义的Tag 字符串
+    function getTagNames() {
+        var tagNames = document.getElementById("PageOfficeCtrl1").DefineTagNames;
+        return tagNames;
+    }
+
+    //定位Tag
+    function locateTag(tagName) {
+        var appSlt = document.getElementById("PageOfficeCtrl1").Document.Application.Selection;
+        var bFind = false;
+        //appSlt.HomeKey(6);
+        appSlt.Find.ClearFormatting();
+        appSlt.Find.Replacement.ClearFormatting();
+
+        bFind = appSlt.Find.Execute(tagName);
+        if (!bFind) {
+            document.getElementById("PageOfficeCtrl1").Alert("已搜索到文档末尾。");
+            appSlt.HomeKey(6);
+        }
+        window.focus();
+    }
+
+    //添加Tag
+    function addTag(tagName) {
+        try {
+            var tmpRange = document.getElementById("PageOfficeCtrl1").Document.Application.Selection.Range;
+            tmpRange.Text = tagName;
+            tmpRange.Select();
+            return "true";
+        } catch (e) {
+            return "false";
+        }
+    }
+
+    //删除Tag
+    function delTag(tagName) {
+        var tmpRange = document.getElementById("PageOfficeCtrl1").Document.Application.Selection.Range;
+        if (tagName == tmpRange.Text) {
+            tmpRange.Text = "";
+            return "true";
+        }
+        else
+            return "false";
+    }
+</script>
+
+
+
 <script type="text/javascript">
 
     function Save() {
         document.getElementById("PageOfficeCtrl1").WebSave();
+
     }
+
+    function ShowDefineDataTags() {
+        document.getElementById("PageOfficeCtrl1").ShowHtmlModelessDialog("dataTagsUrl", "parameter=xx", "left=300px;top=390px;width=430px;height=410px;frame:no;");
+    }
+
     function PrintFile(){
         document.getElementById("PageOfficeCtrl1").ShowDialog(4);
 
@@ -43,29 +99,7 @@
         }
     }
 
-    // 隐藏/显示 标题栏
-    function Button1_onclick() {
-        var bVisible = document.getElementById("PageOfficeCtrl1").Titlebar;
-        document.getElementById("PageOfficeCtrl1").Titlebar = !bVisible;
-    }
 
-    // 隐藏/显示 菜单栏
-    function Button2_onclick() {
-        var bVisible = document.getElementById("PageOfficeCtrl1").Menubar;
-        document.getElementById("PageOfficeCtrl1").Menubar = !bVisible;
-    }
-
-
-    // 隐藏/显示 自定义工具栏
-    function Button3_onclick() {
-        var bVisible = document.getElementById("PageOfficeCtrl1").CustomToolbar;
-        document.getElementById("PageOfficeCtrl1").CustomToolbar = !bVisible;
-    }
-    // 隐藏/显示 Office工具栏
-    function Button4_onclick() {
-        var bVisible = document.getElementById("PageOfficeCtrl1").OfficeToolbars;
-        document.getElementById("PageOfficeCtrl1").OfficeToolbars = !bVisible;
-    }
 </script>
 </body>
 </html>

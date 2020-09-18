@@ -6,6 +6,7 @@ import com.cetc.model.document.DocumentTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -17,7 +18,7 @@ public class DocumentTemplateController {
 
 
     @PostMapping("saveDocumentTemplate")
-    public Result saveDocumentTemplate(@RequestBody DocumentTemplate documentTemplate){
+    public Result saveDocumentTemplate(@RequestBody DocumentTemplate documentTemplate) throws IOException {
         return documentTemplateService.saveDocumentTemplate(documentTemplate);
 
     }

@@ -10,6 +10,7 @@ import com.cetc.project.mapper.CodeDao;
 import com.cetc.project.mapper.ProjectDao;
 import com.cetc.project.mapper.ProjectExcuteDao;
 import com.cetc.project.service.ProjectExcuteService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProjectExcuteServiceImpl implements ProjectExcuteService {
@@ -50,6 +52,17 @@ public class ProjectExcuteServiceImpl implements ProjectExcuteService {
     public Result findPageExcuteByProject(SearchProjectExcute searchExcute) {
         PageHelper.startPage(searchExcute.getPageNum(),searchExcute.getPageSize());
         List<ProjectExcute> projectExcuteList = projectExcuteDao.findProjectExcuteByProject(searchExcute.getProjectId());
+        PageInfo<ProjectExcute> pageInfo = new PageInfo<>(projectExcuteList);
+        return new Result(true, StatusCode.OK,"",pageInfo);
+    }
+
+    @Override
+    public Result findPageExcuteByMonthCommit(Map map) {
+        int pageNum = (int)map.get("pageNum");
+        int pageSize = (int)map.get("pageSize");
+        long monthCommitId = (int)map.get("monthCommitId") ;
+        PageHelper.startPage(pageNum, pageSize);
+        List<ProjectExcute> projectExcuteList = projectExcuteDao.findProjectExcuteByMonthCommitId(monthCommitId);
         PageInfo<ProjectExcute> pageInfo = new PageInfo<>(projectExcuteList);
         return new Result(true, StatusCode.OK,"",pageInfo);
     }

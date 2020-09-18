@@ -26,6 +26,7 @@
     <modules>
         <module>cetc_common</module>
         <module>cetc_auth</module>
+        <module>cetc_dic</module>
         <module>cetc_eureka</module>
         <module>cetc_admin</module>
         <module>cetc_gateway</module>

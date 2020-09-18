@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.project.mapper.ProjectMonthCommitDao">
+    <resultMap id="projectMonthCommitMap" type="com.cetc.model.project.ProjectMonthCommit">
+        <!--定义主键-->
+        <id property="id" column="id" />
+        <!--property:主键在pojo中的属性名-->
+        <!--column:主键在数据库中的列名-->
+        <result property="commitMan" column="commit_man"/>
+        <result property="commitTime" column="commit_time"/>
+        <result property="projectId" column="project_id"/>
+        <result property="remarks" column="remarks"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <insert id="save">
+        INSERT INTO  cetc_project_month_commit (
+        commit_man,
+        commit_time,
+        project_id,
+        remarks,
+        create_time
+        ) VALUES
+        (
+        #{commitMan},
+        #{commitTime},
+        #{projectId},
+        #{remarks},
+        #{createTime}
+        )
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="findAll" resultMap="projectMonthCommitMap">
+        SELECT *
+        FROM cetc_project_month_commit
+        WHERE project_id=#{projectId}
+        ORDER BY commit_time DESC
+    </select>
+
+    <update id="update">
+        UPDATE cetc_project_month_commit
+        <set>
+            <if test="commitMan != null and commitMan !=''">
+                commit_man = #{commitMan,jdbcType=VARCHAR},
+           </if>
+            <if test="commitTime != null">
+                commit_time = #{commitTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+    </update>
+
+    <delete id="delete">
+        DELETE FROM cetc_project_month_commit WHERE id=#{id}
+    </delete>
+
+</mapper>

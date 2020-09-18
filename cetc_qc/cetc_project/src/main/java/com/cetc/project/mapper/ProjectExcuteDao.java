@@ -13,8 +13,14 @@ import java.util.List;
 public interface ProjectExcuteDao {
 
     void addProjectExcute(ProjectExcute projectExcute);
+
     List<ProjectExcute> findProjectExcuteByProject(@Param("projectId") Long projectId);
+
+    List<ProjectExcute> findProjectExcuteByMonthCommitId(@Param("monthCommitId") Long monthCommitId);
+
     void updateProjectExcute(ProjectExcute projectExcute);
+
     void deleteOne(@Param("id") Long id);
+
     void deleteProjectExcute(SearchProjectExcute searchProjectExcute);
 }

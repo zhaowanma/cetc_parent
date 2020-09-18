@@ -9,13 +9,21 @@ import com.cetc.model.document.DocumentTemplate;
 import com.cetc.model.project.Code;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.xmlbeans.XmlCursor;
+import org.apache.xmlbeans.XmlObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,7 +43,7 @@ public class DocumentTemplateServiceImpl implements DocumentTemplateService {
 
     @Override
     @Transactional
-    public Result saveDocumentTemplate(DocumentTemplate documentTemplate) {
+    public Result saveDocumentTemplate(DocumentTemplate documentTemplate) throws IOException {
         String documentName= UUID.randomUUID().toString();
         String dictoryName=documentTemplatePath+File.separator+documentName;
         Path dictoryPath = Paths.get(dictoryName);
@@ -48,11 +56,21 @@ public class DocumentTemplateServiceImpl implements DocumentTemplateService {
         }
         String docName=documentTemplate.getDocName();
         String location=documentTemplatePath+File.separator+documentName+File.separator+docName+".docx";
-        Path path = Paths.get(location);
-        try {
-            Files.createFile(path);
-        } catch (IOException e) {
+        FileOutputStream outputStream=null;
+        try{
+            XWPFDocument doc = new XWPFDocument();
+            XWPFParagraph paragraph = doc.createParagraph();
+            XWPFRun run = paragraph.createRun();
+            run.setText("如今的现在早已不是曾今说好的以后。。。");
+            outputStream = new FileOutputStream(location);
+            doc.write(outputStream);
+            outputStream.close();
+        }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            if(outputStream!=null){
+                outputStream.close();
+            }
         }
         documentTemplate.setCreateBy(LoginUserUtil.getLoginSysUser().getUsername());
         documentTemplate.setCreateDate(new Date());
