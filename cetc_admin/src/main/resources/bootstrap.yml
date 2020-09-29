@@ -32,7 +32,7 @@ spring:
         max-wait: -1
       shutdown-timeout: 100ms
   rabbitmq:
-    host: cetc-redis
+    host: cetc-rabbitmq
     port: 5672
     username: cetc
     password: cetc

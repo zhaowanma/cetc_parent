@@ -23,4 +23,19 @@ public class ProjectMonthCommitController {
         return projectMonthCommitService.findAll(id);
     }
 
+    @PostMapping("update")
+    public Result update(@RequestBody ProjectMonthCommit projectMonthCommit){
+        return projectMonthCommitService.update(projectMonthCommit);
+    }
+
+    @GetMapping("delete/{id}")
+    public Result delete(@PathVariable Long id){
+        return projectMonthCommitService.delete(id);
+    }
+
+    @GetMapping("findById/{id}")
+    public Result findById(@PathVariable Long id){
+        return projectMonthCommitService.findById(id);
+    }
+
 }

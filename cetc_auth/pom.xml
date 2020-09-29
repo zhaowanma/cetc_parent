@@ -41,11 +41,6 @@
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit</artifactId>
         </dependency>
-        <!-- 配置中心客户端-->
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-config-client</artifactId>-->
-        <!--</dependency>-->
         <!-- 公共实体类-->
         <dependency>
             <artifactId>cetc_common_model</artifactId>

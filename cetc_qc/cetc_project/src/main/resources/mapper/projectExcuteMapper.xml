@@ -28,6 +28,23 @@
         <result property="createBy" column="create_by"/>
         <result property="updateDate" column="update_date"/>
         <result property="updateBy" column="update_by"/>
+        <result property="testQus" column="test_qus"/>
+
+        <result property="testType" column="test_type"/>
+        <result property="zerenbumen" column="zerenbumen"/>
+        <result property="designQusNum" column="design_qus_num"/>
+        <result property="codeQusNum" column="code_qus_num"/>
+        <result property="docQusNum" column="doc_qus_num"/>
+        <result property="bianmaQusNum" column="bianma_qus_num"/>
+        <result property="qitaQusNum" column="qita_qus_num"/>
+        <result property="guanjianQusNum" column="guanjian_qus_num"/>
+        <result property="zhongyaoQusNum" column="zhongyao_qus_num"/>
+        <result property="yibanQusNum" column="yiban_qus_num"/>
+        <result property="jianyigaijinQusNum" column="jianyigaijin_qus_num"/>
+        <result property="daimaguimo" column="daimaguimo"/>
+        <result property="testQusNum" column="test_qus_num"/>
+        <result property="rjkfman" column="rjkfman"/>
+
     </resultMap>
     <insert id="addProjectExcute">
         INSERT INTO  cetc_project_excute (
@@ -50,8 +67,22 @@
             create_date,
             create_by,
             update_date,
-            update_by
-
+            update_by,
+            test_qus,
+            test_type,
+            zerenbumen,
+            design_qus_num,
+            code_qus_num,
+            doc_qus_num,
+            bianma_qus_num,
+            qita_qus_num,
+            guanjian_qus_num,
+            zhongyao_qus_num,
+            yiban_qus_num,
+            jianyigaijin_qus_num,
+            daimaguimo,
+            test_qus_num,
+            rjkfman
         )
         VALUES
         (
@@ -74,7 +105,22 @@
             #{createDate},
             #{createBy},
             #{updateDate},
-            #{updateBy}
+            #{updateBy},
+         #{testQus},
+         #{testType},
+         #{zerenbumen},
+         #{designQusNum},
+         #{codeQusNum},
+         #{docQusNum},
+         #{bianmaQusNum},
+         #{qitaQusNum},
+         #{guanjianQusNum},
+         #{zhongyaoQusNum},
+         #{yibanQusNum},
+         #{jianyigaijinQusNum},
+         #{daimaguimo},
+         #{testQusNum},
+         #{rjkfman}
         )
 
     </insert>
@@ -105,6 +151,51 @@
            </if>
            <if test="examples !=null and examples !=''">
                  examples = #{examples},
+           </if>
+           <if test="testQus !=null and testQus !=''">
+               test_qus = #{testQus},
+           </if>
+           <if test="testType !=null and testType !=''">
+               test_type = #{testType},
+           </if>
+           <if test="zerenbumen !=null and zerenbumen !=''">
+               zerenbumen = #{zerenbumen},
+           </if>
+           <if test="designQusNum !=null">
+               design_qus_num = #{designQusNum},
+           </if>
+           <if test="codeQusNum !=null">
+               code_qus_num = #{codeQusNum},
+           </if>
+           <if test="docQusNum !=null">
+               doc_qus_num = #{docQusNum},
+           </if>
+           <if test="bianmaQusNum !=null">
+               bianma_qus_num = #{bianmaQusNum},
+           </if>
+           <if test="qitaQusNum !=null">
+               qita_qus_num = #{qitaQusNum},
+           </if>
+           <if test="guanjianQusNum !=null">
+               guanjian_qus_num = #{guanjianQusNum},
+           </if>
+           <if test="zhongyaoQusNum !=null">
+               zhongyao_qus_num = #{zhongyaoQusNum},
+           </if>
+           <if test="yibanQusNum !=null">
+               yiban_qus_num = #{yibanQusNum},
+           </if>
+           <if test="jianyigaijinQusNum !=null">
+               jianyigaijin_qus_num = #{jianyigaijinQusNum},
+           </if>
+           <if test="daimaguimo !=null">
+               daimaguimo = #{daimaguimo},
+           </if>
+           <if test="testQusNum !=null">
+               test_qus_num = #{testQusNum},
+           </if>
+           <if test="rjkfman !=null and rjkfman!=''">
+               rjkfman = #{rjkfman},
            </if>
        </set>
      where id = #{id}

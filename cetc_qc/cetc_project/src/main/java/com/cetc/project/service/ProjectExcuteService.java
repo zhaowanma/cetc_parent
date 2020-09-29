@@ -10,12 +10,9 @@ public interface ProjectExcuteService {
 
     Result addProjectExcute(ProjectExcute projectExcute);
 
-    Result findPageExcuteByProject(SearchProjectExcute searchExcute);
-
     Result findPageExcuteByMonthCommit(Map map);
 
     Result updateProjectExcute(ProjectExcute projectExcute);
-
 
     Result deleteProjectExcute(Long id);
 

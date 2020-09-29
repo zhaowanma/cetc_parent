@@ -48,13 +48,7 @@ public class ProjectExcuteServiceImpl implements ProjectExcuteService {
         return new Result(true, StatusCode.OK,"添加成功");
     }
 
-    @Override
-    public Result findPageExcuteByProject(SearchProjectExcute searchExcute) {
-        PageHelper.startPage(searchExcute.getPageNum(),searchExcute.getPageSize());
-        List<ProjectExcute> projectExcuteList = projectExcuteDao.findProjectExcuteByProject(searchExcute.getProjectId());
-        PageInfo<ProjectExcute> pageInfo = new PageInfo<>(projectExcuteList);
-        return new Result(true, StatusCode.OK,"",pageInfo);
-    }
+
 
     @Override
     public Result findPageExcuteByMonthCommit(Map map) {

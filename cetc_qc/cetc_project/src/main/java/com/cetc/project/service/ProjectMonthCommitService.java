@@ -12,4 +12,6 @@ public interface ProjectMonthCommitService {
     Result findAll(long projectId);
 
     Result delete(long id);
+
+    Result findById(long id);
 }

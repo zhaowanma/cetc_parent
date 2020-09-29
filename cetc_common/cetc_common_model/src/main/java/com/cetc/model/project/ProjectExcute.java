@@ -31,6 +31,157 @@ public class ProjectExcute implements Serializable {
     private Date passDate;
     private int useTime;
 
+//以下为执行问题的字段
+    private String testQus;
+
+    private String testType;
+
+    private String zerenbumen;
+
+    private Long designQusNum;
+
+    private Long codeQusNum;
+
+    private Long docQusNum;
+
+    private Long bianmaQusNum;
+
+    private Long qitaQusNum;
+
+    private Long guanjianQusNum;
+
+    private Long zhongyaoQusNum;
+
+    private Long yibanQusNum;
+
+    private Long jianyigaijinQusNum;
+
+    private Double daimaguimo;
+
+    private Long testQusNum;
+
+    private String rjkfman;
+
+    public String getTestQus() {
+        return testQus;
+    }
+
+    public void setTestQus(String testQus) {
+        this.testQus = testQus;
+    }
+
+    public String getTestType() {
+        return testType;
+    }
+
+    public void setTestType(String testType) {
+        this.testType = testType;
+    }
+
+    public String getZerenbumen() {
+        return zerenbumen;
+    }
+
+    public void setZerenbumen(String zerenbumen) {
+        this.zerenbumen = zerenbumen;
+    }
+
+    public Long getDesignQusNum() {
+        return designQusNum;
+    }
+
+    public void setDesignQusNum(Long designQusNum) {
+        this.designQusNum = designQusNum;
+    }
+
+    public Long getCodeQusNum() {
+        return codeQusNum;
+    }
+
+    public void setCodeQusNum(Long codeQusNum) {
+        this.codeQusNum = codeQusNum;
+    }
+
+    public Long getDocQusNum() {
+        return docQusNum;
+    }
+
+    public void setDocQusNum(Long docQusNum) {
+        this.docQusNum = docQusNum;
+    }
+
+    public Long getBianmaQusNum() {
+        return bianmaQusNum;
+    }
+
+    public void setBianmaQusNum(Long bianmaQusNum) {
+        this.bianmaQusNum = bianmaQusNum;
+    }
+
+    public Long getQitaQusNum() {
+        return qitaQusNum;
+    }
+
+    public void setQitaQusNum(Long qitaQusNum) {
+        this.qitaQusNum = qitaQusNum;
+    }
+
+    public Long getGuanjianQusNum() {
+        return guanjianQusNum;
+    }
+
+    public void setGuanjianQusNum(Long guanjianQusNum) {
+        this.guanjianQusNum = guanjianQusNum;
+    }
+
+    public Long getZhongyaoQusNum() {
+        return zhongyaoQusNum;
+    }
+
+    public void setZhongyaoQusNum(Long zhongyaoQusNum) {
+        this.zhongyaoQusNum = zhongyaoQusNum;
+    }
+
+    public Long getYibanQusNum() {
+        return yibanQusNum;
+    }
+
+    public void setYibanQusNum(Long yibanQusNum) {
+        this.yibanQusNum = yibanQusNum;
+    }
+
+    public Long getJianyigaijinQusNum() {
+        return jianyigaijinQusNum;
+    }
+
+    public void setJianyigaijinQusNum(Long jianyigaijinQusNum) {
+        this.jianyigaijinQusNum = jianyigaijinQusNum;
+    }
+
+    public Double getDaimaguimo() {
+        return daimaguimo;
+    }
+
+    public void setDaimaguimo(Double daimaguimo) {
+        this.daimaguimo = daimaguimo;
+    }
+
+    public Long getTestQusNum() {
+        return testQusNum;
+    }
+
+    public void setTestQusNum(Long testQusNum) {
+        this.testQusNum = testQusNum;
+    }
+
+    public String getRjkfman() {
+        return rjkfman;
+    }
+
+    public void setRjkfman(String rjkfman) {
+        this.rjkfman = rjkfman;
+    }
+
     public Long getMonthCommitId() {
         return monthCommitId;
     }

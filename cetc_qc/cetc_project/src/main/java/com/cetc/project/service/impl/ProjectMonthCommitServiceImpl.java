@@ -50,4 +50,10 @@ public class ProjectMonthCommitServiceImpl implements ProjectMonthCommitService 
         projectMonthCommitDao.delete(id);
         return new Result(true, StatusCode.OK,"ok");
     }
+
+    @Override
+    public Result findById(long id) {
+        ProjectMonthCommit byId = projectMonthCommitDao.findById(id);
+        return new Result(true,StatusCode.OK,"ok",byId);
+    }
 }

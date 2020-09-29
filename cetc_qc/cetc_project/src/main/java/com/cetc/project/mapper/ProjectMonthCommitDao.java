@@ -16,6 +16,8 @@ public interface ProjectMonthCommitDao {
 
     void delete(long id);
 
+    ProjectMonthCommit findById(long id);
+
     void update(ProjectMonthCommit projectMonthCommit);
 
 }

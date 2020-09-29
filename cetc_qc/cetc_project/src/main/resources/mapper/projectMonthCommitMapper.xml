@@ -13,6 +13,9 @@
         <result property="projectId" column="project_id"/>
         <result property="remarks" column="remarks"/>
         <result property="createTime" column="create_time"/>
+        <result property="rjxq" column="rjxq"/>
+        <result property="csxq" column="csxq"/>
+        <result property="csyl" column="csyl"/>
     </resultMap>
 
     <insert id="save">
@@ -22,6 +25,7 @@
         project_id,
         remarks,
         create_time
+
         ) VALUES
         (
         #{commitMan},
@@ -29,6 +33,7 @@
         #{projectId},
         #{remarks},
         #{createTime}
+
         )
         <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
             SELECT LAST_INSERT_ID()
@@ -51,11 +56,28 @@
             <if test="commitTime != null">
                 commit_time = #{commitTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="remarks != null and remarks !=''">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="rjxq != null">
+                rjxq = #{rjxq},
+            </if>
+            <if test="csxq != null">
+                csxq = #{csxq},
+            </if>
+            <if test="csyl != null">
+                csyl = #{csyl},
+            </if>
         </set>
+        where id = #{id}
     </update>
 
     <delete id="delete">
         DELETE FROM cetc_project_month_commit WHERE id=#{id}
     </delete>
+
+    <select id="findById" resultMap="projectMonthCommitMap">
+        select * from cetc_project_month_commit WHERE id=#{id}
+    </select>
 
 </mapper>

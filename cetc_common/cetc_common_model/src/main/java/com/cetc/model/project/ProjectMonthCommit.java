@@ -21,6 +21,36 @@ public class ProjectMonthCommit implements Serializable {
 
     private String createTimeStr;
 
+    private Long rjxq;
+
+    private Long csxq;
+
+    private Long csyl;
+
+    public Long getRjxq() {
+        return rjxq;
+    }
+
+    public void setRjxq(Long rjxq) {
+        this.rjxq = rjxq;
+    }
+
+    public Long getCsxq() {
+        return csxq;
+    }
+
+    public void setCsxq(Long csxq) {
+        this.csxq = csxq;
+    }
+
+    public Long getCsyl() {
+        return csyl;
+    }
+
+    public void setCsyl(Long csyl) {
+        this.csyl = csyl;
+    }
+
     public String getCreateTimeStr() {
         return createTimeStr;
     }

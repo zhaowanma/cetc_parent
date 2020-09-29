@@ -1,6 +1,5 @@
 server:
   port: 9809
-
 spring:
   application:
     name: cetc-project
