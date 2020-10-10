@@ -29,7 +29,10 @@
                 <bind name="_fullname" value="'%' + fullname + '%'"/>
                 and t.fullname like #{_fullname}
             </if>
-                and t.username != "root"
+            <if test="userType != null">
+                and t.user_type = #{userType}
+            </if>
+                and t.username != "admin"
                 and t.del_flag =0
 
         </where>
