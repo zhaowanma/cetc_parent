@@ -71,7 +71,8 @@ public class PageofficeController {
 
     public WordDocument getDataTags(){
         WordDocument doc = new WordDocument();
-        doc.getTemplate().defineDataTag("测试");
+        doc.getTemplate().defineDataTag("{产品名称}");
+        doc.getTemplate().defineDataTag("{所内代号}");
         return doc;
     }
 
