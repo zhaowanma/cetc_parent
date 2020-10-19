@@ -1,7 +1,4 @@
 package com.cetc.project.service.impl;
-
-
-import com.cetc.common.core.entity.DocumentLevel;
 import com.cetc.common.core.entity.Result;
 import com.cetc.common.core.entity.StatusCode;
 import com.cetc.common.core.utils.LoginUserUtil;
@@ -36,9 +33,6 @@ public class CodeServiceImpl implements CodeService {
 
     @Autowired
     private ProjectDao projectDao;
-
-    @Autowired
-    private TestTypeDicDao testTypeDicDao;
 
     @Autowired
     private KingdomDao kingdomDao;
@@ -152,8 +146,7 @@ public class CodeServiceImpl implements CodeService {
             codeTestDao.deleteCodeTest(searchCodeTest);
             //删除项目参与人
             projectDao.delJoins(project.getId());
-            //删除测试类型
-            testTypeDicDao.delptd(project.getId());
+
         }
         //删除测试执行
         SearchProjectExcute searchProjectExcute = new SearchProjectExcute();
@@ -403,10 +396,6 @@ public class CodeServiceImpl implements CodeService {
         }
         return new Result(true,StatusCode.OK,"Ok",false);
     }
-
-
-
-
 
     @Override
     public Result countOfMonth(Map map) {

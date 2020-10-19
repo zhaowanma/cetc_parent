@@ -1,4 +1,4 @@
-package com.cetc.project.entities;
+package com.cetc.model.project;
 
 import java.io.Serializable;
 

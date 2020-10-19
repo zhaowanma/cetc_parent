@@ -22,5 +22,10 @@ public class AlmDomainController {
             return domainService.findAlmDomains();
     }
 
+    @GetMapping("createAlmDomains/{codeId}")
+    public Result  createAlmDomains(@PathVariable long codeId){
+        return domainService.createAlmDomains(codeId);
+    }
+
 
 }

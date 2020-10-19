@@ -137,7 +137,7 @@ public class DocumentCheckServiceImpl implements DocumentCheckService {
             return new Result(false,StatusCode.ERROR,"请选择.docx文档");
         }
            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-           String redisKey = UUID.randomUUID().toString().replace("-", "")+sdf.format(new Date());
+           String redisKey = "document_check"+UUID.randomUUID().toString().replace("-", "")+sdf.format(new Date());
             new Thread(()->{
                 try{
                     //分析开始，分析超过1小时默认失败

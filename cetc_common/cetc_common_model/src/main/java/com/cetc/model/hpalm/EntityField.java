@@ -14,11 +14,31 @@ public class EntityField implements Serializable {
 
     private String label;
 
+    private String type;
+
     private String name;
 
     private Boolean system;
 
     private Boolean required;
+
+    private Integer listId;
+
+    public Integer getListId() {
+        return listId;
+    }
+
+    public void setListId(Integer listId) {
+        this.listId = listId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public Long getProjectId() {
         return projectId;

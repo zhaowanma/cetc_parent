@@ -25,12 +25,7 @@ public interface ProjectService {
      */
     Result pageByParent(SearchProject searchProject);
 
-    /**
-     * 获取测试类型
-     * @param id
-     * @return
-     */
-    Result getTestTypeList(Long id);
+
 
     /**
      * 新建项目获取
@@ -66,7 +61,6 @@ public interface ProjectService {
      */
     Result countOfMonth(Map map);
 
-
     Result handleProjectIsZy(Project project);
 
     Result findByCode(Long id);
@@ -75,7 +69,7 @@ public interface ProjectService {
 
     Result findProjectById(long id);
 
-    Result updateProject(Project project);
+    Result updateProjectStatus(Project project);
 
     Result updateProjectAndJoins(Project project);
 

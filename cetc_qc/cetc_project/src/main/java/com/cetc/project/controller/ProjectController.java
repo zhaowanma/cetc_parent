@@ -33,17 +33,15 @@ public class ProjectController {
     public Result update(@RequestBody Project project){
         return projectService.save(project);
     }
+
     @PostMapping("queryList")
     public Result queryList(@RequestBody SearchProject searchProject){
         return projectService.queryList(searchProject);
     }
+
     @PostMapping("pageByParent")
     public Result pageByParent(@RequestBody SearchProject searchProject) {
         return projectService.pageByParent(searchProject);
-    }
-    @GetMapping("getTestType/{id}")
-    public Result getTestType(@PathVariable Long id) {
-        return projectService.getTestTypeList(id);
     }
 
     @GetMapping("delProject/{id}")
@@ -77,11 +75,11 @@ public class ProjectController {
     public Result findProjectsByStatusReady(@RequestBody SearchProject searchProject) {
         return projectService.findProjectsByStatusReady(searchProject);
     }
-
+   //提供给流程引擎使用
     @PostMapping("updateProjectStatus")
     @LogAnnotation(module = "更新项目状态")
     public Result updateProjectStatus(@RequestBody Project project){
-        return projectService.updateProject(project);
+        return projectService.updateProjectStatus(project);
     }
 
     @GetMapping("delProjectAct/{id}")
@@ -117,8 +115,6 @@ public class ProjectController {
     public Result handleProjectIsZy(@RequestBody Project project){
         return projectService.handleProjectIsZy(project);
     }
-
-
 
 
 

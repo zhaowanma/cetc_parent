@@ -7,6 +7,7 @@ public class StatusCode {
 
     public static final int OK=20000;//成功
     public static final int ERROR =20001;//失败
+    public static final int serviceDeg=30000;//服务降级
     public static final int LOGINERROR =20002;//用户名或密码错误
     public static final int USERNAMEUNEXIST =20003;//用户名不存在
     public static final int USERNAMEUNABLE =20004;//用户未激活

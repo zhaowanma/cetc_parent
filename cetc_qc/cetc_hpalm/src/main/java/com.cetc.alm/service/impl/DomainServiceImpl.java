@@ -3,14 +3,18 @@ package com.cetc.alm.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.cetc.alm.config.utils.CookieUtil;
 import com.cetc.alm.dao.AlmConfigDao;
+import com.cetc.alm.dao.AlmSiteConfigDao;
+import com.cetc.alm.dao.CodeDao;
 import com.cetc.alm.service.AuthencateService;
 import com.cetc.alm.service.DomainService;
+import com.cetc.alm.utils.SiteAdminUtils;
 import com.cetc.common.core.entity.Result;
 import com.cetc.common.core.entity.StatusCode;
 import com.cetc.model.hpalm.AlmConfig;
-import com.cetc.model.hpalm.AlmDomain;
+import com.cetc.model.project.Code;
+import com.jacob.com.ComThread;
+import com.jacob.com.Dispatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +34,16 @@ public class DomainServiceImpl implements DomainService {
     
     @Autowired
     private AlmConfigDao almConfigDao;
+
     @Autowired
-    private CookieUtil cookieUtil;
+    private AlmSiteConfigDao almSiteConfigDao;
+
+    @Autowired
+    private AuthencateService authencateService;
+
+    @Autowired
+    private CodeDao codeDao;
+
     @Override
     public Result findDomains(AlmConfig almConfig,List<String> cookieList) {
         List<String> domainList = new ArrayList<>();
@@ -82,9 +94,10 @@ public class DomainServiceImpl implements DomainService {
 
     @Override
     public Result findAlmDomains() {
+        List<String> cookieList =null;
+        AlmConfig almConfig=almConfigDao.findAlmConfig();
         try {
-            AlmConfig almConfig = almConfigDao.findAlmConfig();
-            List<String> cookieList = cookieUtil.getCookieList();
+           cookieList =authencateService.login(almConfig) ;
             if(cookieList!=null&&cookieList.size()>0){
                 Result domains = findDomains(almConfig, cookieList);
                 return domains;
@@ -94,11 +107,48 @@ public class DomainServiceImpl implements DomainService {
             e.printStackTrace();
             logger.error("查询alm中所有的域失败");
             return new Result(false,StatusCode.ERROR,"失败");
-        }
+        }finally {
+            if(cookieList!=null){
+                authencateService.closeSession(almConfig,cookieList);
+                authencateService.logout(almConfig,cookieList);
+            }
 
+        }
     }
 
-
+    @Override
+    public Result createAlmDomains(long codeId) {
+        Code code = codeDao.findOne(codeId);
+        String almDomainName=code.getScope();
+        Dispatch disp=null;
+        try {
+           disp = SiteAdminUtils.getDisp(almSiteConfigDao.findAlmSiteConfig());
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(false,StatusCode.ERROR,"登录失败，请检查是否有空闲license");
+        }
+        try {
+            Result almDomainsResult = findAlmDomains();
+            List<String> almDomains=new ArrayList<>();
+            if(almDomainsResult.isFlag()){
+               almDomains=(List<String>)almDomainsResult.getData();
+            }
+            if(!almDomains.contains(almDomainName)){
+                System.out.println(almDomainName);
+                Dispatch.call(disp,"CreateDomain",almDomainName,"","",-1);
+            }
+           return new Result(true,StatusCode.OK,"alm域创建成功");
+        }catch (Exception e){
+           e.printStackTrace();
+           logger.error("***************创建alm域"+almDomainName+"失败"+e.getMessage());
+            return new Result(false,StatusCode.ERROR,e.getMessage());
+        }finally {
+            if(disp!=null){
+                Dispatch.call(disp, "Logout");
+                ComThread.InitSTA();
+            }
+        }
+    }
 
 
 }

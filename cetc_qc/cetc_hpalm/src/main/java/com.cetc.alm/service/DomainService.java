@@ -10,4 +10,6 @@ public interface DomainService {
 
      Result findAlmDomains();
 
+     Result createAlmDomains(long codeId);
+
 }

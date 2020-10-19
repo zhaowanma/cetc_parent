@@ -10,7 +10,7 @@ ORYX.Utils = {
      * General helper method for parsing a param out of current location url
      * @example
      * // Current url in Browser => "http://oryx.org?param=value"
-     * ORYX.Utils.getParamFromUrl("param") // => "value" 
+     * ORYX.utils.getParamFromUrl("param") // => "value"
      * @param {Object} name
      */
     getParamFromUrl: function(name){

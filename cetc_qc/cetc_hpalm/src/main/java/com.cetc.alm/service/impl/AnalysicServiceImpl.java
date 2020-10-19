@@ -1,14 +1,15 @@
 package com.cetc.alm.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.cetc.alm.config.utils.CookieUtil;
 import com.cetc.alm.config.utils.RedisUtil;
 import com.cetc.alm.dao.AlmConfigDao;
 import com.cetc.alm.dao.ProjectDao;
 import com.cetc.alm.service.AnalysicService;
+import com.cetc.alm.service.AuthencateService;
 import com.cetc.alm.service.EntityService;
 import com.cetc.common.core.entity.Result;
 import com.cetc.common.core.entity.StatusCode;
+import com.cetc.model.hpalm.AlmConfig;
 import com.cetc.model.hpalm.EntityField;
 import com.cetc.model.project.Project;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ public class AnalysicServiceImpl implements AnalysicService {
     private EntityService entityService;
 
     @Autowired
-    private CookieUtil cookieUtil;
+    private AuthencateService authencateService;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -42,6 +43,8 @@ public class AnalysicServiceImpl implements AnalysicService {
     private AlmConfigDao almConfigDao;
     @Override
     public Result findProjectDataCount(long id,Boolean refresh) {
+        List<String> cookieList =null;
+        AlmConfig almConfig=almConfigDao.findAlmConfig();
         try {
             Project project = projectDao.findOne(id);
             if(project!=null&&project.getAlmDomainName()!=null&&project.getAlmProjectName()!=null){
@@ -53,7 +56,7 @@ public class AnalysicServiceImpl implements AnalysicService {
                     List list = (List)JSON.parseArray(json);
                     return new Result(true, StatusCode.OK,"ok",list);
                 }
-                List<String> cookieList = cookieUtil.getCookieList();
+                cookieList = authencateService.login(almConfig);
                 Result reqFieldResult = entityService.findEntityFields(project.getAlmDomainName(), project.getAlmProjectName(), "requirement", almConfigDao.findAlmConfig(), cookieList);
                 //需求属性
                 String reqField="";
@@ -131,12 +134,17 @@ public class AnalysicServiceImpl implements AnalysicService {
             logger.error("统计项目数据表错误"+e.getMessage());
             return new Result(false, StatusCode.OK,"失败");
 
+        }finally {
+            if(cookieList!=null){
+                authencateService.logout(almConfig,cookieList);
+            }
         }
-
     }
 
     @Override
     public Result testCaseCount(long id,Boolean refresh) {
+        List<String> cookieList =null;
+        AlmConfig almConfig=almConfigDao.findAlmConfig();
       try {
           Project project = projectDao.findOne(id);
           if(project!=null&&project.getAlmDomainName()!=null&&project.getAlmProjectName()!=null){
@@ -148,7 +156,7 @@ public class AnalysicServiceImpl implements AnalysicService {
                   List list = (List)JSON.parseArray(json);
                   return new Result(true, StatusCode.OK,"ok",list);
               }
-              List<String> cookieList = cookieUtil.getCookieList();
+              cookieList = authencateService.login(almConfig);
               Result reqFieldResult = entityService.findEntityFields(project.getAlmDomainName(), project.getAlmProjectName(), "requirement", almConfigDao.findAlmConfig(), cookieList);
               //需求属性
               String reqField="";
@@ -247,12 +255,18 @@ public class AnalysicServiceImpl implements AnalysicService {
           e.printStackTrace();
           logger.error("统计测试用例状态错误"+e.getMessage());
           return new Result(false, StatusCode.OK,"失败");
+      }finally {
+          if(cookieList!=null){
+              authencateService.logout(almConfig,cookieList);
+          }
       }
 
     }
 
     @Override
     public Result defectCount(long id,Boolean refresh) {
+        List<String> cookieList =null;
+        AlmConfig almConfig=almConfigDao.findAlmConfig();
         try {
             Project project = projectDao.findOne(id);
             if(project!=null&&project.getAlmDomainName()!=null&&project.getAlmProjectName()!=null){
@@ -270,7 +284,7 @@ public class AnalysicServiceImpl implements AnalysicService {
                 int defect4=0;
                 //严重程度
                 String servityField="";
-                List<String> cookieList = cookieUtil.getCookieList();
+                cookieList = authencateService.login(almConfig);
                 Result defectFieldResult = entityService.findEntityFields(project.getAlmDomainName(), project.getAlmProjectName(), "defect", almConfigDao.findAlmConfig(), cookieList);
                 List<String> filter = new ArrayList<>();
                 if(defectFieldResult.isFlag()){
@@ -328,17 +342,21 @@ public class AnalysicServiceImpl implements AnalysicService {
             }else {
                 return new Result(false, StatusCode.OK,"本地项目不可用（未关联到alm项目）");
             }
-
-
         }catch (Exception e){
             e.printStackTrace();
             logger.error("统计缺陷错误"+e.getMessage());
             return new Result(false, StatusCode.OK,"失败");
+        }finally {
+            if(cookieList!=null){
+                authencateService.logout(almConfig,cookieList);
+            }
         }
     }
 
     @Override
     public Result testCaseTypeCount(long id,Boolean refresh) {
+        List<String> cookieList =null;
+        AlmConfig almConfig=almConfigDao.findAlmConfig();
         try {
             Project project = projectDao.findOne(id);
             if(project!=null&&project.getAlmDomainName()!=null&&project.getAlmProjectName()!=null){
@@ -350,7 +368,7 @@ public class AnalysicServiceImpl implements AnalysicService {
                     List list = (List)JSON.parseArray(json);
                     return new Result(true, StatusCode.OK,"ok",list);
                 }
-                List<String> cookieList = cookieUtil.getCookieList();
+                cookieList = authencateService.login(almConfig);
                 Result reqFieldResult = entityService.findEntityFields(project.getAlmDomainName(), project.getAlmProjectName(), "requirement", almConfigDao.findAlmConfig(), cookieList);
                 //需求属性
                 String reqField="";
@@ -452,13 +470,11 @@ public class AnalysicServiceImpl implements AnalysicService {
                 dataList.add(testStatic);
                 dataList.add(testluoji);
                 dataList.add(testyuliang);
-
                 dataList.add(testgongneng);
                 dataList.add(testxingneng);
                 dataList.add(testjiekou);
                 dataList.add(testqiangdu);
                 dataList.add(testshujuchuli);
-
                 dataList.add(testkehuifuxing);
                 dataList.add(testkeanzhuangxing);
                 dataList.add(testanquanxing);
@@ -474,6 +490,10 @@ public class AnalysicServiceImpl implements AnalysicService {
             e.printStackTrace();
             logger.error("测试用例统计数量错误"+e.getMessage());
             return new Result(false, StatusCode.OK,"失败");
+        }finally {
+            if(cookieList!=null){
+                authencateService.logout(almConfig,cookieList);
+            }
         }
     }
 

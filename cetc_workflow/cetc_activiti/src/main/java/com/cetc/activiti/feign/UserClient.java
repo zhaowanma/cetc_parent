@@ -1,7 +1,5 @@
 package com.cetc.activiti.feign;
 
-
-
 import com.cetc.activiti.feign.impl.UserClientImpl;
 import com.cetc.common.core.entity.Result;
 import com.cetc.model.admin.LoginSysUser;

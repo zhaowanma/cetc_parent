@@ -9,11 +9,13 @@ import java.util.List;
 public interface EntityService {
     public Result findEntityFields(String domainName, String projectName, String entityName, AlmConfig almConfig,List<String> cookieList);
 
-    public Result findEntityFieldsJsonStr(String domainName, String projectName, String entityName, AlmConfig almConfig,List<String> cookieList);
+    public Result queryEntityListValues(String domainName, String projectName, String entityName, AlmConfig almConfig,List<String> cookieList);
 
     public Result findEntities(String domainName, String projectName, String entityName, AlmConfig almConfig,List<String> cookieList,List<String> filters);
 
-   // public Result findPageEntities(String domainName, String projectName, String entityName,int pageSize ,AlmConfig almConfig,List<String> cookieList,List<String> filters);
+    public Result queryEntityByFilters(String domainName, String projectName, String entityName, AlmConfig almConfig,List<String> cookieList,String filter );
 
-    public Result findEntitiesJsonStr(String domainName, String projectName, String entityName, AlmConfig almConfig,List<String> cookieList);
+    public Result createEntity(String entityXml,String url,List<String> cookieList );
+
+
 }

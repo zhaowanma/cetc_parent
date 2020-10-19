@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.alm.dao.DocumentCheckDao">
+    <resultMap id="documentCheckMap" type="com.cetc.model.project.DocumentCheck">
+        <id property="id" column="id" />
+        <result property="parentId" column="parent_id"/>
+        <result property="checkLevel" column="check_level"/>
+        <result property="fileName" column="file_name"/>
+        <result property="version" column="version"/>
+        <result property="designer" column="designer"/>
+        <result property="checker" column="checker"/>
+        <result property="docType" column="doc_type"/>
+        <result property="company" column="company"/>
+        <result property="checkGrade" column="check_grade"/>
+        <result property="sysConfItem" column="sys_conf_item"/>
+        <result property="pageSize" column="page_size"/>
+        <result property="matterCount" column="matter_count"/>
+        <result property="kingdom" column="kingdom"/>
+        <result property="code" column="code"/>
+        <result property="project" column="project"/>
+        <result property="kingdomId" column="kingdom_id"/>
+        <result property="codeId" column="code_id"/>
+        <result property="projectId" column="project_id"/>
+        <result property="annoFlag" column="anno_flag"/>
+        <result property="remark" column="remark"/>
+        <result property="createDate" column="create_date"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="updateBy" column="update_by"/>
+
+    </resultMap>
+
+    <select id="findById" resultMap="documentCheckMap">
+        select * from cetc_document_check where id=#{id}
+    </select>
+
+
+</mapper>

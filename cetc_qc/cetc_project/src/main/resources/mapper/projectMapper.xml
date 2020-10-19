@@ -11,6 +11,7 @@
         <result property="kingdom" column="kingdom"/>
         <result property="kingdomId" column="kingdom_id"/>
         <result property="testGrade" column="test_grade"/>
+        <result property="testType" column="test_type"/>
         <result property="testLeader" column="test_leader"/>
         <result property="leader" column="leader"/>
         <result property="num" column="num"/>
@@ -40,6 +41,7 @@
              kingdom,
              kingdom_id,
              test_grade,
+             test_type,
              test_leader,
              leader,
              num,
@@ -57,6 +59,7 @@
             #{kingdom},
             #{kingdomId},
             #{testGrade},
+            #{testType},
             #{testLeader},
             #{leader},
             #{num},
@@ -81,6 +84,7 @@
         kingdom,
         kingdom_id,
         test_grade,
+        test_type,
         test_leader,
         leader,
         num,
@@ -103,6 +107,7 @@
         #{kingdom},
         #{kingdomId},
         #{testGrade},
+        #{testType},
         #{testLeader},
         #{leader},
         #{num},
@@ -187,6 +192,9 @@
             </if>
             <if test="testGrade != null and testGrade !=''">
                 test_grade = #{testGrade,jdbcType=VARCHAR},
+            </if>
+            <if test="testType != null and testType !=''">
+                test_type = #{testType,jdbcType=VARCHAR},
             </if>
             <if test="testLeader != null and testLeader !=''">
                 test_leader = #{testLeader,jdbcType=VARCHAR},

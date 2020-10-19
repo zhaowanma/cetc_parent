@@ -17,7 +17,7 @@ public class ResoureceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(PermitAllUrl.permitAllUrl("/users-anon/**", "/findUserByList")).permitAll() // 放开权限的url
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
     }
 
     @Bean

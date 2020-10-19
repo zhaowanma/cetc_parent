@@ -1,6 +1,7 @@
 package com.cetc.activiti.autoTask;
 
 
+import com.cetc.activiti.feign.HpAlmClient;
 import com.cetc.activiti.feign.ProjectClient;
 import com.cetc.common.core.entity.Result;
 import com.cetc.model.project.Code;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service("autoTaskService")
@@ -22,15 +24,46 @@ public class AutoTaskService {
     @Autowired
     private ProjectClient projectClient;
 
+    @Autowired
+    private HpAlmClient hpAlmClient;
+
+
     @Transactional
-    public void fileTransfer(DelegateExecution execution) {
-        System.out.println("文件导入完成了");
+    public void createAlmDomain(DelegateExecution execution) {
+
+            String id = execution.getProcessInstanceBusinessKey();
+            Result result = hpAlmClient.createAlmDomain(Long.parseLong(id));
+            if(!result.isFlag()){
+                logger.error("服务调用创建alm域失败");
+                throw new RuntimeException(result.getMessage());
+            }
+
     }
 
     @Transactional
-    public void sendMsg(DelegateExecution execution) {
-        System.out.println("通知发送完毕");
+    public void createAlmProject(DelegateExecution execution) {
+        String id = execution.getProcessInstanceBusinessKey();
+        Map<String, Object> variables = execution.getVariables();
+        Map<String, Object> projectCreateInfo = new HashMap<>();
+        if(variables!=null){
+            String almTemplateDomain =(String)variables.get("almDomain");
+            String almTemplateProject =(String)variables.get("almProject");
+            Boolean testTypeGen =(Boolean)variables.get("testTypeGen");
+            long copyOptions=(int)variables.get("copyOptions");
+
+            projectCreateInfo.put("projectId",Long.parseLong(id));
+            projectCreateInfo.put("almTemplateDomain",almTemplateDomain);
+            projectCreateInfo.put("almTemplateProject",almTemplateProject);
+            projectCreateInfo.put("testTypeGen",testTypeGen);
+            projectCreateInfo.put("copyOptions",copyOptions);
+            Result result = hpAlmClient.createAlmProject(projectCreateInfo);
+            if(!result.isFlag()){
+                logger.error("服务调用创建alm项目失败");
+                throw new RuntimeException(result.getMessage());
+            }
+        }
     }
+
 
     @Transactional
     public void updateApply(DelegateExecution execution) {
@@ -49,7 +82,6 @@ public class AutoTaskService {
             throw new RuntimeException("修改令号状态失败");
 
         }
-
     }
 
     @Transactional
@@ -58,13 +90,7 @@ public class AutoTaskService {
             String id = execution.getProcessInstanceBusinessKey();
             Map<String, Object> variables = execution.getVariables();
             Project project = new Project();
-            if(variables!=null){
-                String almDomain =(String)variables.get("almDomain");
-                String almProject =(String)variables.get("almProject");
-                project.setId(Long.valueOf(id));
-                project.setAlmDomainName(almDomain);
-                project.setAlmProjectName(almProject);
-            }
+            project.setId(Long.valueOf(id));
             project.setStatus(true);
             Result result = projectClient.updateProjectStatus(project);
             if(!result.isFlag()){

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.alm.dao.AlmSiteConfigDao">
+
+    <resultMap id="almSiteConfigMap" type="com.cetc.model.hpalm.AlmSiteConfig">
+        <id column="id" property="id"></id>
+        <result column="url" property="url"></result>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+        <result column="db_type" property="dbType"></result>
+        <result column="db_address" property="dbAddress"></result>
+        <result column="db_port" property="dbPort"></result>
+        <result column="db_name" property="dbName"></result>
+        <result column="db_user" property="dbUser"></result>
+        <result column="db_password" property="dbPassword"></result>
+    </resultMap>
+
+
+    <insert id="saveAlmSiteConfig">
+        insert into cetc_alm_site_config(url,username,password,db_type,db_address,db_port,db_name,db_user,db_password)
+        values (#{url},#{username},#{password},#{dbType},#{dbAddress},#{dbPort},#{dbName},#{dbUser},#{dbPassword})
+    </insert>
+
+
+    <update id="updateAlmSiteConfig">
+         update cetc_alm_site_config set url=#{url},username=#{username},password=#{password},
+                                    db_type=#{dbType},db_address=#{dbAddress},db_port=#{dbPort},db_name=#{dbName},
+                                    db_user=#{dbUser},db_password=#{dbPassword}
+    </update>
+
+
+    <select id="findAlmSiteConfig" resultMap="almSiteConfigMap">
+        select * from cetc_alm_site_config
+    </select>
+</mapper>

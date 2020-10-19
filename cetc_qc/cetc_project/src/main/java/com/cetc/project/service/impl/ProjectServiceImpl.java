@@ -40,8 +40,7 @@ public class ProjectServiceImpl implements ProjectService {
     private KingdomDao kingdomDao;
     @Autowired
     private ProjectDao projectDao;
-    @Autowired
-    private TestTypeDicDao testTypeDicDao;
+
     @Autowired
     private HmilyDao hmilyDao;
     @Autowired
@@ -96,16 +95,9 @@ public class ProjectServiceImpl implements ProjectService {
             }
             projectDao.addProject(project);
         }else{
-            //更新
-            testTypeDicDao.delptd(project.getId());
             projectDao.update(project);
         }
-        List<Long> testType = project.getTestType();
-        if(testType!=null){
-            for (Long id : testType) {
-                testTypeDicDao.addptd(project.getId(),id);
-            }
-        }
+
         return new Result(true,StatusCode.OK,"");
     }
     @Override
@@ -115,15 +107,7 @@ public class ProjectServiceImpl implements ProjectService {
         PageInfo<Project> pageInfo = new PageInfo<>(projectByKingdom);
         return new Result(true,StatusCode.OK,"",pageInfo);
     }
-    @Override
-    public Result getTestTypeList(Long id) {
-        List<Long> ids = new ArrayList<>();
-        List<TestTypeDic> list = testTypeDicDao.findByProjectId(id);
-        for (TestTypeDic t : list) {
-            ids.add(t.getDicId());
-        }
-        return new Result(true,StatusCode.OK,"",ids);
-    }
+
     @Override
     public Result getNum(Long codeId) {
         String num = "";
@@ -134,8 +118,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public Result delProject(Long id) {
-        //删除测试类型
-        testTypeDicDao.delptd(id);
         //删除参与人员
         projectDao.delJoins(id);
         //删除可视人员表
@@ -156,8 +138,7 @@ public class ProjectServiceImpl implements ProjectService {
         SearchProjectExcute searchProjectExcute = new SearchProjectExcute();
         searchProjectExcute.setProjectId(id);
         projectExcuteDao.deleteProjectExcute(searchProjectExcute);
-        //删除项目测试类型表
-        testTypeDicDao.delptd(id);
+
         //删除代码测试
         SearchCodeTest searchCodeTest = new SearchCodeTest();
         searchCodeTest.setParentId(id);
@@ -317,8 +298,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public Result updateProject(Project project) {
+    public Result updateProjectStatus(Project project) {
         try {
+            Project one = projectDao.findOne(project.getId());
+            Code code = codeDao.findOne(one.getParentId());
+            project.setAlmDomainName(code.getScope());
+            project.setAlmProjectName(one.getName());
             projectDao.update(project);
             return new Result(true,StatusCode.OK,"修改项目信息成功");
         }catch (Exception e){
@@ -539,7 +524,6 @@ public class ProjectServiceImpl implements ProjectService {
             }
             return new Result(true,StatusCode.OK,"",set.size());
         }
-
     }
 
     @Override

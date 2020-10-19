@@ -48,3 +48,17 @@ eureka:
     instance-id: ${spring.application.name}:${server.port} #指定实例ID
     prefer-ip-address: true #访问路径可以显示IP地址
 
+#feign的配置
+feign:
+  hystrix:                                 #此配置表示开启feign的熔断
+    enabled: true
+ribbon:                         #如果路由方式是serviceId的方式，那么ribbon的生效，如果是url的方式，则zuul.host开头的生效
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+hystrix:                        #如果涉及到上传文件，要将超时时间设置的长一些，否则会报异常
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000

@@ -3,11 +3,11 @@ package com.cetc.alm.controller;
 import com.cetc.alm.service.AnalysicService;
 import com.cetc.alm.service.ProjectService;
 import com.cetc.common.core.entity.Result;
+import com.cetc.common.core.entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("almProject")
@@ -43,4 +43,17 @@ public class AlmProjectController {
     public Result findProjectAnalysic4(@PathVariable long id,@PathVariable Boolean refresh){
         return analysicService.testCaseTypeCount(id,refresh);
     }
+
+    @PostMapping("createAlmProject")
+    public Result createAlmProject(@RequestBody Map map){
+        projectService.createAlmProjects(map);
+        return new Result(true, StatusCode.OK,"发起alm项目创建成功");
+    }
+
+    @GetMapping("findProjectCreateLogs/{id}")
+    public Result findProjectCreateLogs(@PathVariable long id){
+        return projectService.findAlmProjectCreateLog(id);
+    }
+
+
 }

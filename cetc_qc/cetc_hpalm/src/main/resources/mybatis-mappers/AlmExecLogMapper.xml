@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cetc.alm.dao.AlmExecLogDao">
+
+    <resultMap id="almExecLogMap" type="com.cetc.model.hpalm.AlmExecLog">
+        <id column="id" property="id"></id>
+        <result column="content" property="content"></result>
+        <result column="exec_time" property="execTime"></result>
+        <result column="business_type" property="businessType"></result>
+        <result column="business_id" property="businessId"></result>
+        <result column="remarks" property="remarks"></result>
+        <result column="status" property="status"></result>
+        <result column="icon" property="icon"></result>
+        <result column="color" property="color"></result>
+    </resultMap>
+    <insert id="save">
+        insert into cetc_alm_exec_log(content,exec_time,business_type,business_id,remarks,status,icon,color)
+        values (#{content},#{execTime},#{businessType},#{businessId},#{remarks},#{status},#{icon},#{color})
+    </insert>
+
+    <select id="findByBusinsessType" resultMap="almExecLogMap">
+        select * from cetc_alm_exec_log where business_type=#{businessType} and business_id=#{businessId} order by exec_time
+    </select>
+</mapper>

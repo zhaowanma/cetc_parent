@@ -12,7 +12,7 @@ public class Project implements Serializable {
     private Long kingdomId; //所属领域
     private String code;    //所属令号
     private String testGrade;  // 测试级别
-    private List<Long> testType;// 测试类型
+    private String testType;// 测试类型
     private String testLeader;//   测试负责人
     private String leader;    //总体负责人
     private String num;//项目序号
@@ -121,11 +121,11 @@ public class Project implements Serializable {
         this.testGrade = testGrade;
     }
 
-    public List<Long> getTestType() {
+    public String getTestType() {
         return testType;
     }
 
-    public void setTestType(List<Long> testType) {
+    public void setTestType(String testType) {
         this.testType = testType;
     }
 
